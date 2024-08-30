@@ -41,14 +41,18 @@ class CategoryController extends Controller
 
         $data = new categorylist;
         $data->categoryname = $request->categoryName;
+        $data->status = 'inactive';
         if ($request->file('image')) {
             $filePath = 'categoryimages';
             $path = Storage::disk('public')->put($filePath, $request->image);
             $data->image = $path;
-        }
-        if ($data->save()) {        
+            $data->save();
             return redirect()->route('admin.categories.list');
         }
+        
+        // if () {        
+            
+        // }
     }
 
     public function destroy($id)
