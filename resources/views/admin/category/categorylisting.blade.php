@@ -24,7 +24,7 @@
         border: 1px solid #ddd;
     }
     th, td {
-        padding: 8px;
+        padding: 5px;
         text-align: left;
     }
     th {
@@ -89,7 +89,7 @@
     }
     .pagination{
         float: right;
-        margin-top: 10px;
+        margin-top: 5px;
     }
     th .sortable{
         color: black;
@@ -178,7 +178,7 @@
         </tbody>
     </table>
     <div class="pagination">
-        {{ $data->onEachSide(1)->links() }}
+        {{ $data->links() }}
     </div>
 </div>
 <script>

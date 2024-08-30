@@ -235,7 +235,7 @@
         </tbody>
     </table>
     <div class="pagination">
-        {{ $data->onEachSide(1)->links() }}
+        {{ $data->links() }}
     </div>
 </div>
 <script>

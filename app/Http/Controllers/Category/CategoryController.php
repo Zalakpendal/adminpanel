@@ -18,7 +18,7 @@ class CategoryController extends Controller
     }
     public function listingpage()
     {
-        $data = categorylist::sortable()->paginate(5);
+        $data = categorylist::sortable()->paginate(3);
         return view('admin.category.categorylisting',compact('data'));
     }
   
