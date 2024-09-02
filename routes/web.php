@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Calendar\CalendarController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\adminController;
@@ -137,8 +138,12 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['admin'], 'prefix' => 'ad
         Route::get('/editform/{offer_id}', [OfferController::class, 'editform'])->name('editform');
         Route::post('/update/{offer_id}', [OfferController::class, 'update'])->name('update');
         Route::get('/admin/offers/search', [OfferController::class, 'searchOffers'])->name('search');
-
     });
+
+    Route::group(['prefix' => 'calendar', 'as' => 'calendar.'], function () {
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    });
+    
 });
 
 
