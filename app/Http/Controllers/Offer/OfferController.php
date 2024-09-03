@@ -44,11 +44,12 @@ class OfferController extends Controller
         $data->restaurant_id = $request->restaurant_id;
         $data->offername = $request->offer_name;
         $data->coupon_no = $request->coupon_no;
+        $data->start_date = $request->start_date;
         $data->coupon_validity = $request->coupon_validity;
         $data->coupon_time = $request->coupon_time;
         $data->amount = $request->amount;
         $data->minimum_price = $request->minimum_price;
-        $data->status = 1;
+        $data->status = 'active';
 
         if ($data->save()) {
             return redirect()->route('admin.offersofrestaurants.list')->with('success', 'Offer added successfully!');
@@ -93,6 +94,7 @@ class OfferController extends Controller
         $offer->restaurant_id = $request->restaurant_id;
         $offer->offername = $request->offer_name;
         $offer->coupon_no = $request->coupon_no;
+        $offer->start_date = $request->start_date;
         $offer->coupon_validity = $request->coupon_validity;
         $offer->coupon_time = $request->coupon_time;
         $offer->amount = $request->amount;

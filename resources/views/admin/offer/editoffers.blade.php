@@ -106,6 +106,11 @@
         </div>
 
         <div class="form-group">
+        <label for="coupon_start_date">Start-date</label>
+            <input type="date" id="start_date" name="start_date" value="{{ $offer->start_date }}">
+        </div>
+
+        <div class="form-group">
             <label for="coupon_validity">Coupon Validity</label>
             <input type="date" id="coupon_validity" name="coupon_validity" value="{{ $offer->coupon_validity }}" required>
         </div>

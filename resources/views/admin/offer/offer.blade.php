@@ -201,6 +201,9 @@
                             class="fa {{ request('sort') == 'offername' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
                     </a>
                 </th>
+
+                <th>Start-Date</th>
+
                 <th>
                     <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'coupon_validity', 'direction' => request('sort') == 'coupon_validity' && request('direction') == 'asc' ? 'desc' : 'asc']) }}"
                         class="sortable">
@@ -242,6 +245,7 @@
                 <tr>
                     <td>{{ $offer->restaurant->restaurantname }}</td>
                     <td>{{ $offer->offername }}</td>
+                    <td>{{$offer->start_date}}</td>
                     <td>{{ $offer->coupon_validity }}</td>
                     <td>{{ $offer->coupon_time }}</td>
                     <td>{{ $offer->amount }}</td>

@@ -142,6 +142,11 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['admin'], 'prefix' => 'ad
 
     Route::group(['prefix' => 'calendar', 'as' => 'calendar.'], function () {
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::get('/calendar/add', [CalendarController::class, 'create'])->name('create');
+    Route::post('/calendar/add', [CalendarController::class, 'store'])->name('store');
+    Route::get('/list', [CalendarController::class, 'list'])->name('list');
+    Route::get('/edit/{id}', [CalendarController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [CalendarController::class, 'update'])->name('update');
     });
     
 });
