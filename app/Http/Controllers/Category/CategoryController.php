@@ -108,7 +108,7 @@ class CategoryController extends Controller
     {
         $search = $request->input('search');
 
-        $data = categorylist::where('categoryname', 'LIKE', "%{$search}%")->get();
+        $data = categorylist::where('categoryname', 'LIKE', "%{$search}%")->paginate(3);
 
         return view('admin.category.categorylisting', compact('data'));
     }

@@ -79,7 +79,7 @@ class RestaueanrtypeController extends Controller
     {
         $search = $request->input('search');
 
-        $data = typelist::where('restauranttype', 'LIKE', "%{$search}%")->get();
+        $data = typelist::where('restauranttype', 'LIKE', "%{$search}%")->paginate(5);
 
         return view('admin.Restauranttypemodule.Restaurantlist', compact('data'));
     }

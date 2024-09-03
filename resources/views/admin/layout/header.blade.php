@@ -18,7 +18,7 @@
             </li>
             <!-- Logout Link -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.logout') }}">
+            <a class="nav-link" href="#" onclick="confirmLogout(event)">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </li>

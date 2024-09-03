@@ -49,6 +49,64 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8xxqUcj3DdFxFpHsecxPkaSK3ajslMUI&libraries=places" async defer></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var addressInput = document.getElementById('address');
+
+            if (addressInput) {
+                var autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                    types: ['address'],
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        console.log('No details available for input: "' + place.name + '"');
+                        return;
+                    }
+                    console.log(place);
+                });
+            }
+        });
+    </script>
+
+<script>
+    function confirmLogout(event) {
+        event.preventDefault(); 
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you really want to logout?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to the logout route if confirmed
+                window.location.href = "{{ route('admin.logout') }}";
+            }
+        });
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const links = document.querySelectorAll('.nav-link');
+
+    links.forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
+</script>
+
+
 
 
 

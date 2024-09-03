@@ -9,12 +9,7 @@
         margin: 20px;
     }
 
-    .actions {
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .actions .buttons {
+    .buttons {
         display: flex;
     }
 
@@ -100,7 +95,6 @@
     .delete,
     .statusbtn {
         border: none;
-        /* border: 1px solid #4f6b7d; */
         background: none;
     }
 
@@ -156,13 +150,6 @@
 </div>
 
 <div class="restaurantlisting">
-    <!-- <div class="actions">
-        <div class="buttons">
-            <input type="text" placeholder="Search.." name="search" class="search-input">
-            <button type="button" class="btnsearch"><i class="fa fa-search"></i></button>
-        </div>
-        <button class="btn" id="addtypes"><a href="{{route('admin.allrestaurants.add')}}">Add</a></button>
-    </div> -->
     <form method="GET" action="{{ route('admin.allrestaurants.search') }}">
             <div class="buttons">
                 <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">

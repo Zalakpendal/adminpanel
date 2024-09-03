@@ -12,7 +12,7 @@ class RestaurantsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:create restaurant', ['only' => ['addrestaurantform','insertdataofrestaurant']]);
+        $this->middleware('permission:create restaurant', ['only' => ['addrestaurantform', 'insertdataofrestaurant']]);
         $this->middleware('permission:update restaurant', ['only' => ['updatedata', 'editform']]);
         $this->middleware('permission:delete restaurant', ['only' => ['destroy']]);
         $this->middleware('permission:view restaurant', ['only' => ['listingpage']]);
@@ -66,7 +66,7 @@ class RestaurantsController extends Controller
         }
 
         if ($data->save()) {
-            return redirect()->route('admin.allrestaurants.list');  
+            return redirect()->route('admin.allrestaurants.list');
         }
     }
 
@@ -118,7 +118,8 @@ class RestaurantsController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $data= restaurantslist::where('restaurantname','LIKE',"%{$search}%")->get();
+        $data = restaurantslist::where('restaurantname', 'LIKE', "%{$search}%")->paginate(3);
         return view('admin.Restaurants.allrestaurantlist', compact('data'));
     }
+
 }

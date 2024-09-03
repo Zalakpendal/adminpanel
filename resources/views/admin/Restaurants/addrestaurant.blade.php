@@ -121,11 +121,13 @@
 
         <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber">
-            @if ($errors->any())
-                <strong style="color:red">*Please enter Phone number</strong>
-                @endif
+            <input type="text" id="phoneNumber" name="phoneNumber" maxlength="10" pattern="\d{10}"
+                placeholder="Enter 10-digit phone number" required>
+            @if ($errors->has('phoneNumber'))
+                <strong style="color:red">*Please enter a valid 10-digit phone number</strong>
+            @endif
         </div>
+
 
         <div class="form-group">
             <label for="address">Address</label>
@@ -140,7 +142,7 @@
             <textarea id="description" name="description" rows="4"></textarea>
             @if ($errors->any())
                 <strong style="color:red">*Please enter about Restaurant</strong>
-                @endif
+            @endif
         </div>
 
         <div class="form-group">

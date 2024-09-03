@@ -10,12 +10,7 @@
         margin: 20px;
     }
 
-    .actions {
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .actions .buttons {
+    .buttons {
         display: flex;
     }
 
@@ -44,10 +39,9 @@
 
     .search-input {
         border: 1px solid #ddd;
-        padding: 5px;
+        padding: 4px;
         padding-left: 10px;
-        border-bottom-left-radius: 4px;
-        border-top-left-radius: 4px;
+        border-radius: 4px 0 0 4px;
         border-right: none;
     }
 
@@ -60,6 +54,7 @@
         border-radius: 3px;
         text-align: center;
     }
+    
 
     .btn:hover {
         background-color: #365163;
@@ -92,8 +87,7 @@
 
     .buttons .btnsearch {
         border: 1px solid #ddd;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-radius: 0 4px 4px 0;
     }
 
     .fa-toggle-on {
@@ -127,6 +121,8 @@
     th .sortable{
         color: black;
     }
+   
+
 
 </style>
 
@@ -156,21 +152,13 @@
 </div>
 
 <div class="restaurantlisting">
-    <!-- <div class="actions">
-        <div class="buttons">
-            <input type="text" placeholder="Search.." name="search" class="search-input">
-            <button type="btn" class="btnsearch"><i class="fa fa-search"></i></button>
-        </div>
-        <button class="btn" id="addtypes"><a href="{{route('admin.restaurant.add')}}">Add</a></button>
-    </div> -->
     <form method="GET" action="{{ route('admin.restaurant.search') }}">
-        <div class="buttons">
-            <input type="text" placeholder="Search.." name="search" class="search-input"
-                value="{{ request()->query('search') }}">
-            <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
-        </div>
-        <button class="btn" id="addtypes"><a href="{{ route('admin.restaurant.add') }}">Add</a></button>
-    </form>
+            <div class="buttons">
+                <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">
+                <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
+            </div>
+            <button class="btn" id="addtypes"><a href="{{ route('admin.restaurant.add') }}">Add</a></button>
+        </form>
     <table>
         <thead>
             <tr>
@@ -228,7 +216,7 @@
         </tbody>
     </table>
     <div class="pagination">
-        {{ $data->onEachSide(1)->links() }}
+        {{ $data->links() }}
     </div>
 </div>
 <script>

@@ -16,9 +16,9 @@ class CalendarController extends Controller
             $formattedEvents[] = [
                 'id' => $event->id,
                 'title' => $event->title,
-                'start' => $event->start_date, 
-                'end' => $event->end_date,    
-                'color' => $event->color, 
+                'start' => $event->start_date,
+                'end' => $event->end_date,
+                'color' => $event->color,
             ];
         }
         return view('admin.calendar.calendar', [
@@ -70,4 +70,12 @@ class CalendarController extends Controller
 
         return redirect()->route('admin.calendar.calendar')->with('success', 'Event updated successfully.');
     }
+    public function destroy($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->delete();
+
+        return redirect()->route('admin.calendar.list')->with('success', 'Event deleted successfully.');
+    }
+
 }

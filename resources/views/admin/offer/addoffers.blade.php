@@ -139,7 +139,7 @@
 
         <div class="form-group">
             <label for="amount">Amount</label>
-            <input type="number" id="amount" name="amount">
+            <input type="text" id="amount" name="amount">
             @if ($errors->any())
                 <strong style="color:red">*Please enter Amount</strong>
                 @endif

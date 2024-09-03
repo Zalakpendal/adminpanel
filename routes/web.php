@@ -147,6 +147,8 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['admin'], 'prefix' => 'ad
     Route::get('/list', [CalendarController::class, 'list'])->name('list');
     Route::get('/edit/{id}', [CalendarController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [CalendarController::class, 'update'])->name('update');
+    Route::delete('/calendar/delete/{id}', [CalendarController::class, 'destroy'])->name('destroy');
+
     });
     
 });
