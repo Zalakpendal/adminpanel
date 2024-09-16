@@ -28,7 +28,7 @@ class MenuController extends Controller
 
     public function addmenuform($id)
     {
-        $categories = categorylist::pluck('categoryname', 'id');
+        $categories = categorylist::where('status','1')->pluck('categoryname', 'id');
         $restaurant = restaurantslist::where('id', $id)->first();
         return view('admin.menu.addmenu', compact('categories', 'restaurant'));
     }
@@ -54,6 +54,7 @@ class MenuController extends Controller
         $data->itemname = $request->item_name;
         $data->price = $request->item_price;
         $data->description = $request->description;
+        $data->status=1;
 
         if ($request->file('image')) {
             $filePath = 'menuitemsimages';
@@ -62,13 +63,13 @@ class MenuController extends Controller
         }
 
         $data->save();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $id]);
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])->with('success', 'item added to the menu!');;
     }
     public function deletemenu($restaurant_id, $menu_id)
     {
         $menu = menulist::where('restaurant_id', $restaurant_id)->where('id', $menu_id)->first();
         $menu->delete();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id]);
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success','item deleted to the menu');
     }
 
     public function editform($restaurant_id, $menu_id)
@@ -87,19 +88,16 @@ class MenuController extends Controller
         $menuItem->itemname = $request->item_name;
         $menuItem->price = $request->item_price;
         $menuItem->description = $request->description;
+        
 
         $menuItem->save();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id]);
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success','updated successfully');
 
     }
     public function toggleStatus($restaurant_id, $menu_id)
     {
         $menuItem = menulist::find($menu_id);
-        if (!$menuItem) {
-            return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('error', 'Menu item not found.');
-        }
-
-        $menuItem->status = $menuItem->status == 'active' ? 'inactive' : 'active';
+        $menuItem->status = ($menuItem->status == 1) ? 0 : 1;
         $menuItem->save();
 
         return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success', 'Status updated successfully.');

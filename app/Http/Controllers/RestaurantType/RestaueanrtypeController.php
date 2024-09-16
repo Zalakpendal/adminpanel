@@ -28,6 +28,7 @@ class RestaueanrtypeController extends Controller
 
         $data = new typelist; 
         $data->restauranttype=$request->restaurant_type;
+        $data->status='1';
         $data->save();
         return redirect()->route('admin.restaurant.list')->with('success', 'RestaurantType Added Successfully!');
     }
@@ -66,15 +67,14 @@ class RestaueanrtypeController extends Controller
     {
         $type = typelist::find($id);
         if ($type) {
-            // Toggle the status between 'active' and 'inactive'
-            $type->status = ($type->status === 'active') ? 'inactive' : 'active';
+            $type->status = ($type->status == 1) ? 0 : 1;
             $type->save();
             
             return redirect()->route('admin.restaurant.list')->with('success', 'Status updated successfully!');
         }
-        
         return redirect()->route('admin.restaurant.list')->with('error', 'Restaurant type not found!');
     }
+    
     public function search(Request $request)
     {
         $search = $request->input('search');

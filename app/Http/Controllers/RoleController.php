@@ -16,11 +16,26 @@ class RoleController extends Controller
         $this->middleware('permission:delete role', ['only' => ['destory']]);
         $this->middleware('permission:view role', ['only' => ['index']]);
     }
-    public function index()
-    {
+    // public function index()
+    // {
 
-        $roles = Role::paginate(5);
-        return view('role-permission.role.index', ['roles' => $roles]);
+    //     $roles = Role::paginate(5);
+    //     return view('role-permission.role.index', ['roles' => $roles]);
+    // }
+    public function index(Request $request)
+    {
+        $query = Role::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $roles = $query->paginate(5);
+
+        return view('role-permission.role.index', [
+            'roles' => $roles
+        ]);
     }
     public function create()
     {
@@ -42,7 +57,7 @@ class RoleController extends Controller
         Role::create([
             'name' => $request->name
         ]);
-        return redirect('role')->with('status', 'Role Created Successfully');
+        return redirect('role')->with('success', 'Role Created Successfully');
 
     }
     public function edit(Role $role)
@@ -66,7 +81,7 @@ class RoleController extends Controller
         $role->update([
             'name' => $request->name
         ]);
-        return redirect('role')->with('status', 'Role updated Successfully');
+        return redirect('role')->with('success', 'Role updated Successfully');
 
 
     }
@@ -74,7 +89,7 @@ class RoleController extends Controller
     {
         $role = Role::find($roleId);
         $role->delete();
-        return redirect('role')->with('status', 'Role deleted Successfully');
+        return redirect('role')->with('success', 'Role deleted Successfully');
     }
 
     public function addpermissionToRole($roleId)
@@ -103,7 +118,7 @@ class RoleController extends Controller
         $role = Role::findOrFail($roleId);
         $role->syncPermissions($request->permission);
 
-        return redirect()->back()->with('status', 'Permission added');
+        return redirect()->back()->with('success', 'Permission added');
     }
 
 }

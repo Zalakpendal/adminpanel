@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password',
         'image',
         'is_admin',
-        'is_user'
+        'is_user',
     ];
 
     /**
@@ -53,4 +53,6 @@ class User extends Authenticatable
         }
     }
     public $sortable = ['id','name', 'email'];
+    
+    
 }

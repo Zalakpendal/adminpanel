@@ -41,18 +41,16 @@ class CategoryController extends Controller
 
         $data = new categorylist;
         $data->categoryname = $request->categoryName;
-        $data->status = 'inactive';
+        $data->status = 1;
+
         if ($request->file('image')) {
             $filePath = 'categoryimages';
             $path = Storage::disk('public')->put($filePath, $request->image);
             $data->image = $path;
             $data->save();
-            return redirect()->route('admin.categories.list');
+            return redirect()->route('admin.categories.list')->with('success', 'Category added!');
         }
         
-        // if () {        
-            
-        // }
     }
 
     public function destroy($id)
@@ -94,8 +92,7 @@ class CategoryController extends Controller
     {
         $category = categorylist::find($id);
         if ($category) {
-            // Toggle the status between 'active' and 'inactive'
-            $category->status = ($category->status == 'active') ? 'inactive' : 'active';
+            $category->status = ($category->status == 1) ? 0 : 1;
             $category->save();
 
             return redirect()->route('admin.categories.list')->with('success', 'Status updated successfully!');

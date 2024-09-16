@@ -24,7 +24,7 @@ class OfferController extends Controller
     }
     public function addoffers()
     {
-        $restaurants = restaurantslist::pluck('restaurantname', 'id');
+        $restaurants = restaurantslist::where('status','1')->pluck('restaurantname', 'id');
         return view('admin.offer.addoffers', compact('restaurants'));
     }
 
@@ -49,7 +49,7 @@ class OfferController extends Controller
         $data->coupon_time = $request->coupon_time;
         $data->amount = $request->amount;
         $data->minimum_price = $request->minimum_price;
-        $data->status = 'active';
+        $data->status = 1;
 
         if ($data->save()) {
             return redirect()->route('admin.offersofrestaurants.list')->with('success', 'Offer added successfully!');
@@ -59,7 +59,9 @@ class OfferController extends Controller
     public function changeStatus($offer_id)
     {
         $offer = offerlist::find($offer_id);
-        $offer->status = $offer->status == 'active' ? 'inactive' : 'active';
+        // $offer->status = $offer->status == 'active' ? 'inactive' : 'active';
+        // $offer->save();
+        $offer->status = ($offer->status == 1) ? 0 : 1;
         $offer->save();
 
         return redirect()->route('admin.offersofrestaurants.list')->with('success', 'Offer status changed successfully!');

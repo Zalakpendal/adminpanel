@@ -25,7 +25,8 @@ class RestaurantsController extends Controller
     }
     public function addrestaurantform()
     {
-        $restaurantTypes = typelist::pluck('restauranttype', 'id');
+        // $restaurantTypes = typelist::pluck('restauranttype', 'id');
+        $restaurantTypes = typelist::where('status', '1')->pluck('restauranttype', 'id');
         return view('admin.Restaurants.addrestaurant', compact('restaurantTypes'));
     }
 
@@ -66,7 +67,7 @@ class RestaurantsController extends Controller
         }
 
         if ($data->save()) {
-            return redirect()->route('admin.allrestaurants.list');
+            return redirect()->route('admin.allrestaurants.list')->with('success','successfully added!');
         }
     }
 
@@ -104,12 +105,8 @@ class RestaurantsController extends Controller
 
     public function toggleStatus($id)
     {
-        $restaurant = restaurantslist::find($id);
-        if (!$restaurant) {
-            return redirect()->route('admin.allrestaurants.list')->with('error', 'Restaurant not found.');
-        }
-
-        $restaurant->status = $restaurant->status == 'active' ? 'inactive' : 'active';
+        $restaurant = restaurantslist::find($id);        
+        $restaurant->status = ($restaurant->status == 1) ? 0 : 1;
         $restaurant->save();
 
         return redirect()->route('admin.allrestaurants.list')->with('success', 'Status updated successfully.');

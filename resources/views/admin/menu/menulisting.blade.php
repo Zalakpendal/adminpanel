@@ -140,6 +140,11 @@
     th .sortable {
         color: black;
     }
+    table tbody tr:hover {
+    background-color: #dcdcdc; 
+    cursor: pointer; 
+}
+
 </style>
 
 <div class="title">
@@ -210,8 +215,8 @@
                     <td>{{ $menuItem->price }}</td>
                     <td><img src="{{$menuItem->image }}" alt="Image" style="width:50px; height:50px;"></td>
                     <td>
-                        <span class="{{ $menuItem->status == 'active' ? 'status-active' : 'status-inactive' }}">
-                            {{($menuItem->status) }}
+                    <span class="{{ $menuItem->status == 1 ? 'status-active' : 'status-inactive' }}">
+                            {{ $menuItem->status == 1 ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td>
@@ -241,7 +246,7 @@
                                 @csrf
                                 <button type="submit" class="statusbtn">
                                     <i
-                                        class="fas {{ $menuItem->status == 'active' ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                        class="fas {{ $menuItem->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                 </button>
                             </form>
                     </td>

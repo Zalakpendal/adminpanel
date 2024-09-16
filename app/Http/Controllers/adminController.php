@@ -32,8 +32,9 @@ class adminController extends Controller
             $user = Auth::user();
             if ($user->is_type == 'admin') {
                 return redirect()->route('admin.dashbord');
-            } else {
-                return redirect()->route('user.dashbord'); // Route for non-admin users
+            }
+             else {
+                return redirect()->back(); 
             }
         } else {
             return redirect()->route('showForm')->withErrors('Invalid email or password.');

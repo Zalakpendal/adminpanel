@@ -70,6 +70,11 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['admin'], 'prefix' => 'ad
     Route::get('dashbord', [adminController::class, 'dashbord'])->name('dashbord');
     Route::get('logout', [adminController::class, 'logout'])->name('logout');
     Route::resource('permission', PermissionController::class);
+   // Web Routes
+Route::get('editprofile', [UserController::class, 'editprofile'])->name('editprofile');
+Route::post('updateprofile', [UserController::class, 'updateProfile'])->name('updateProfile');
+
+    
 
 
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('categoryname');
             $table->string('image');
             $table->timestamps();
-            $table->boolean('is_active')->default('1');
+            $table->boolean('status')->default('1');
             $table->softDeletes('deleted_at', 0);
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

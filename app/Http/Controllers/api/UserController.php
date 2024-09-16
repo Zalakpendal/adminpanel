@@ -41,11 +41,12 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'image' => $folder . $imageName,
+            'is_type' => 'user'
         ]);
 
         if ($user->id) {
             $result = array('status' => true, 'message' => 'user created', 'data' => $user);
-            $responseCode = 200;//for the 200 http request code meaning is success.
+            $responseCode = 200;
         } else {
             $result = array('status' => false, 'message' => 'something went wrong', 'data' => $user);
             $responseCode = 400;
@@ -57,7 +58,7 @@ class UserController extends Controller
         try {
             $users = User::all();
             $result = array('status' => true, 'message' => count($users) . 'user(s) fetched', 'data' => $users);
-            $responseCode = 200;//for the 200 http request code meaning is success.
+            $responseCode = 200;
             return response()->json($result, $responseCode);
         } catch (Exception $e) {
             $result = array(

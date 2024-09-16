@@ -1,35 +1,46 @@
 @extends('admin/layout/master')
 @section('content')
 <style>
-     .title h2 {
+    .title h2 {
         padding: 10px;
     }
+
     .categorylisting {
         margin: 20px;
     }
+
     .actions {
         align-items: center;
         margin-bottom: 10px;
     }
+
     .actions .buttons {
         display: flex;
     }
+
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
         border: 1px solid #ddd;
     }
-    th, td {
+
+    th,
+    td {
         padding: 5px;
         text-align: left;
     }
+
     th {
         background-color: #f2f2f2;
     }
+
     .search-input {
         border: 1px solid #ddd;
         padding: 5px;
@@ -37,6 +48,7 @@
         border-radius: 4px 0 0 4px;
         border-right: none;
     }
+
     .btn {
         padding: 6px 15px;
         cursor: pointer;
@@ -46,63 +58,86 @@
         border-radius: 3px;
         text-align: center;
     }
+
     .btn:hover {
         background-color: #365163;
     }
+
     .buttons {
         float: right;
     }
+
     #addtypes a {
         color: white;
         text-decoration: none;
     }
+
     .action-icons {
         display: flex;
         gap: 15px;
         font-size: 18px;
     }
+
     .action-icons i {
         cursor: pointer;
         color: #4f6b7d;
     }
+
     .action-icons i:hover {
         color: #365163;
     }
+
     .buttons .btnsearch {
         border: 1px solid #ddd;
         border-radius: 0 4px 4px 0;
     }
-    .edit, .delete, .statusbtn {
+
+    .edit,
+    .delete,
+    .statusbtn {
         border: none;
         background: none;
     }
-    table{
+
+    table {
         text-transform: capitalize;
     }
+
     .status-active {
         color: green;
         font-weight: bold;
     }
+
     .status-inactive {
         color: red;
         font-weight: bold;
     }
-    .pagination{
+
+    .pagination {
         float: right;
         margin-top: 5px;
     }
-    th .sortable{
+
+    th .sortable {
         color: black;
     }
-    
+
+
+
+    table tbody tr:hover {
+        background-color: #dcdcdc;
+        cursor: pointer;
+    }
 </style>
+
+
 
 <div class="title">
     <h2>Category List</h2>
 </div>
 
 <div class="homeredirection">
-    <ol class = "breadcrumb">
+    <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.dashbord')}}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{route('admin.categories.list')}}">Categorylist</a></li>
         <li class="breadcrumb-item">List</li>
@@ -112,13 +147,10 @@
 
 <div class="categorylisting">
     <div class="actions">
-        <!-- <div class="buttons">
-            <input type="text" placeholder="Search.." name="search" class="search-input">
-            <button type="button" class="btnsearch"><i class="fa fa-search"></i></button>
-        </div> -->
         <form method="GET" action="{{ route('admin.categories.search') }}">
             <div class="buttons">
-                <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">
+                <input type="text" placeholder="Search.." name="search" class="search-input"
+                    value="{{ request()->query('search') }}">
                 <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
             </div>
             <button class="btn" id="addtypes"><a href="{{ route('admin.categories.add') }}">Add</a></button>
@@ -143,37 +175,40 @@
         </thead>
         <tbody>
             @foreach ($data as $category)
-            <tr>
-                <td>{{$category->categoryname}}</td>
-                <td><img src="{{$category->image }}" alt="Image" style="width:50px; height:50px;"></td>
-                <td>
-                    <span class="{{ $category->status == 'active' ? 'status-active' : 'status-inactive' }}">
-                        {{($category->status) }}
-                    </span>
-                </td>
-                <td>
-                <div class="action-icons">  
-                    @can('update category')
-                        <button class="edit"><a href="{{route('admin.categories.editform',[$category->id])}}"><i class="fas fa-edit"></i></a></button> 
-                    @endcan
-                        <!-- <button class="delete"><a href="{{route('admin.categories.delete',[$category->id])}}"><i class="fas fa-trash-alt"></i></a></button> -->
-                    @can('delete category')
-                        <form action="{{ route('admin.categories.delete',[$category->id]) }}" method="get" class="delete-form" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="delete delete-btn">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    @endcan
-                        <form action="{{ route('admin.categories.toggleStatus', [$category->id]) }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="statusbtn">
-                                <i class="fas {{ $category->status == 'active' ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{$category->categoryname}}</td>
+                    <td><img src="{{$category->image }}" alt="Image" style="width:50px; height:50px;"></td>
+                    <td>
+                        <span class="{{ $category->status == 1 ? 'status-active' : 'status-inactive' }}">
+                            {{ $category->status == 1 ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-icons">
+                            @can('update category')
+                                <button class="edit"><a href="{{route('admin.categories.editform', [$category->id])}}"><i
+                                            class="fas fa-edit"></i></a></button>
+                            @endcan
+                            <!-- <button class="delete"><a href="{{route('admin.categories.delete',[$category->id])}}"><i class="fas fa-trash-alt"></i></a></button> -->
+                            @can('delete category')
+                                <form action="{{ route('admin.categories.delete', [$category->id]) }}" method="get"
+                                    class="delete-form" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="delete delete-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            @endcan
+                            <form action="{{ route('admin.categories.toggleStatus', [$category->id]) }}" method="POST"
+                                style="display: inline;">
+                                @csrf
+                                <button type="submit" class="statusbtn">
+                                    <i class="fas {{ $category->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
@@ -186,7 +221,7 @@
         document.querySelectorAll('.delete-btn').forEach(function (button) {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
-                
+
                 Swal.fire({
                     title: 'Are you sure?',
                     text: 'You will not be able to recover this offer!',

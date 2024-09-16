@@ -105,7 +105,7 @@
         </div>
 
         <div class="form-group">
-            <label for="coupon_name">Coupon Name</label>
+            <label for="coupon_name">Coupon Code</label>
             <input type="text" id="coupon_name" name="coupon_no">
             @if ($errors->any())
                 <strong style="color:red">*Please enter Coupon Name</strong>

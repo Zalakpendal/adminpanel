@@ -11,6 +11,42 @@
     .actions .buttons {
         display: flex;
     }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 18px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .btn-primary {
+        background-color: #0056b3;
+    }
+
+    .btn-primary a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .actions {
+        padding: 10px;
+        margin-left: 10px;
+    }
+    .submit-button {
+        padding: 10px 15px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        background-color: #3C5B6F;
+        float: right;
+    } 
 </style>
 
 <div class="title">
@@ -22,7 +58,7 @@
     </ol>
 </div>
 <div class="actions">
-    <button class="btn" id="addtypes"><a href="{{url('role')}}">back</a></button>
+    <button class="btn btn-primary" id="addtypes"><a href="{{url('role')}}">back</a></button>
 </div>
 <div class="card-body">
     <form action="{{url('role')}}" method="POST">
@@ -31,9 +67,12 @@
     <div class="mb-3">
         <label for="">Role Name</label>
         <input type="text" name="name" class="form-control">
+        @if ($errors->any())
+            <strong style="color:red">*Please enter Role Name</strong>
+        @endif
     </div>
     <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Save
+        <button type="submit" class="submit-button">Save
         </button>
     </div>
 

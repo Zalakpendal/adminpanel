@@ -54,7 +54,7 @@
         border-radius: 3px;
         text-align: center;
     }
-    
+
 
     .btn:hover {
         background-color: #365163;
@@ -98,6 +98,7 @@
     .delete,
     .statusbtn {
         border: none;
+        background-color: #f2f2f2;
     }
 
     table {
@@ -118,11 +119,14 @@
         float: right;
         margin-top: 10px;
     }
-    th .sortable{
+
+    th .sortable {
         color: black;
     }
-   
-
+    table tbody tr:hover {
+    background-color: #dcdcdc; 
+    cursor: pointer; 
+}
 
 </style>
 
@@ -153,12 +157,13 @@
 
 <div class="restaurantlisting">
     <form method="GET" action="{{ route('admin.restaurant.search') }}">
-            <div class="buttons">
-                <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">
-                <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
-            </div>
-            <button class="btn" id="addtypes"><a href="{{ route('admin.restaurant.add') }}">Add</a></button>
-        </form>
+        <div class="buttons">
+            <input type="text" placeholder="Search.." name="search" class="search-input"
+                value="{{ request()->query('search') }}">
+            <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
+        </div>
+        <button class="btn" id="addtypes"><a href="{{ route('admin.restaurant.add') }}">Add</a></button>
+    </form>
     <table>
         <thead>
             <tr>
@@ -179,10 +184,11 @@
                 <tr>
                     <td>{{ $restauranttype->restauranttype }}</td>
                     <td>
-                        <span class="{{ $restauranttype->status == 'active' ? 'status-active' : 'status-inactive' }}">
-                            {{($restauranttype->status) }}
+                        <span class="{{ $restauranttype->status == 1 ? 'status-active' : 'status-inactive' }}">
+                            {{ $restauranttype->status == 1 ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
+
                     <td>
                         <div class="action-icons">
                             <button class="edit">
@@ -206,9 +212,10 @@
                                 @csrf
                                 <button type="submit" class="statusbtn">
                                     <i
-                                        class="fas {{ $restauranttype->status === 'active' ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                        class="fas {{ $restauranttype->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                 </button>
                             </form>
+
                         </div>
                     </td>
                 </tr>

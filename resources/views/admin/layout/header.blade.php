@@ -9,19 +9,35 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
-        <!-- Display User's Name and Logout -->
+       
         @if (Auth::check())
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                <a class="nav-link" href="{{ route('admin.editprofile') }}">
+                   
+                    @if (Auth::user()->image)
+                        <img src="{{ asset(Auth::user()->image) }}" alt="{{ Auth::user()->name }}" class="user-image">
+                    @else
+                        <i class="fas fa-user"></i> 
+                    @endif
+                    {{ Auth::user()->name }}
                 </a>
             </li>
             <!-- Logout Link -->
             <li class="nav-item">
-            <a class="nav-link" href="#" onclick="confirmLogout(event)">
+                <a class="nav-link" href="#" onclick="confirmLogout(event)">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </li>
         @endif
     </ul>
 </nav>
+<style>
+    .user-image {
+        width: 30px; 
+        height: 30px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        margin-right: 5px; 
+    }
+</style>
+

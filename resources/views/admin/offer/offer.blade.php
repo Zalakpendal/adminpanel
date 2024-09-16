@@ -149,6 +149,11 @@
     th .sortable {
         color: black;
     }
+    table tbody tr:hover {
+    background-color: #dcdcdc; 
+    cursor: pointer; 
+}
+
 </style>
 
 <div class="title">
@@ -250,9 +255,14 @@
                     <td>{{ $offer->coupon_time }}</td>
                     <td>{{ $offer->amount }}</td>
                     <td>{{ $offer->minimum_price }}</td>
-                    <td>
+                    <!-- <td>
                         <span class="{{ $offer->status == 'active' ? 'status-active' : 'status-inactive' }}">
                             {{($offer->status) }}
+                        </span>
+                    </td> -->
+                    <td>
+                        <span class="{{ $offer->status == 1 ? 'status-active' : 'status-inactive' }}">
+                            {{ $offer->status == 1 ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td>
@@ -278,10 +288,9 @@
                                 method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit" class="statusbtn">
-                                    <i class="fas {{ $offer->status == 'active' ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                    <i class="fas {{ $offer->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                 </button>
                             </form>
-
                         </div>
                     </td>
                 </tr>

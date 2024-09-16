@@ -31,14 +31,23 @@
     <div class="mb-3">
         <label for="">User Name</label>
         <input type="text" name="name" class="form-control">
+        @if ($errors->any())
+            <strong style="color:red">*Please enter User Name</strong>
+        @endif
     </div>
     <div class="mb-3">
         <label for="">Email Name</label>
         <input type="text" name="email" class="form-control">
+        @if ($errors->any())
+            <strong style="color:red">*Please enter Email</strong>
+        @endif
     </div>
     <div class="mb-3">
         <label for="">Password</label>
         <input type="text" name="password" class="form-control">
+        @if ($errors->any())
+            <strong style="color:red">*Please enter password</strong>
+            @endif
     </div>
     <div class="mb-3">
         <label for="">Roles</label>
@@ -55,7 +64,6 @@
         <button type="submit" class="btn btn-primary">Save
         </button>
     </div>
-
     </form>
 </div>
 
