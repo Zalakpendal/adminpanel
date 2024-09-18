@@ -27,6 +27,16 @@
 <div class="card-body">
     <form action="{{url('users')}}" method="POST">
     @csrf
+    <div class="mb-3">
+        <label for="">Restaurants</label>
+        <select name="restaurants" class="form-control">
+            <option value="">Select Restaurants</option>
+            @foreach ($restaurants as $id => $restaurantsname)
+            <option value="{{$id}}"> {{$restaurantsname}} </option>
+            @endforeach
+        </select>
+        <!-- <input type="text" name="name" class="form-control"> -->
+    </div>
 
     <div class="mb-3">
         <label for="">User Name</label>

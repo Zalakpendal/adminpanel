@@ -160,7 +160,10 @@
                 <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">
                 <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
             </div>
+            
+            @can('create restaurant')
             <button class="btn" id="addtypes"><a href="{{ route('admin.allrestaurants.add') }}">Add</a></button>
+            @endcan
         </form>
     <table>
         <thead>

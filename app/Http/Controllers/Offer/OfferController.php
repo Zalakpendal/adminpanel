@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Offer;
 use App\Http\Controllers\Controller;
 use App\Models\Offer\offerlist;
 use App\Models\Restaurants\restaurantslist;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,14 +18,44 @@ class OfferController extends Controller
         $this->middleware('permission:delete offer', ['only' => ['delete']]);
         $this->middleware('permission:view offer', ['only' => ['listingpage']]);
     }
+    // public function listingpage()
+    // {
+        
+    //     $offers = offerlist::sortable()->with('restaurant')->paginate(5);
+    //     return view('admin.offer.offer', compact('offers'));
+    // }
     public function listingpage()
     {
-        $offers = offerlist::sortable()->with('restaurant')->paginate(5);
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants;
+
+        if ($restaurantId) {
+            $offers = offerlist::where('restaurant_id', $restaurantId)
+                ->sortable()
+                ->with('restaurant')
+                ->paginate(5);
+        } else {
+            $offers = offerlist::sortable()->with('restaurant')->paginate(5);
+        }
+
         return view('admin.offer.offer', compact('offers'));
     }
+    // public function addoffers()
+    // {
+    //     $restaurants = restaurantslist::where('status', '1')->pluck('restaurantname', 'id');
+    //     return view('admin.offer.addoffers', compact('restaurants'));
+    // }
     public function addoffers()
     {
-        $restaurants = restaurantslist::where('status','1')->pluck('restaurantname', 'id');
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants; 
+
+        if ($restaurantId) {
+            $restaurants = restaurantslist::where('id', $restaurantId)->pluck('restaurantname', 'id');
+        } else {
+            $restaurants = restaurantslist::where('status', '1')->pluck('restaurantname', 'id');
+        }
+
         return view('admin.offer.addoffers', compact('restaurants'));
     }
 
@@ -73,12 +104,41 @@ class OfferController extends Controller
 
         return redirect()->route('admin.offersofrestaurants.list')->with('success', 'Offer deleted successfully!');
     }
+    // public function editform($offer_id)
+    // {
+    //     $offer = offerlist::findOrFail($offer_id);
+    //     $restaurants = restaurantslist::pluck('restaurantname', 'id');
+    //     return view('admin.offer.editoffers', compact('offer', 'restaurants'));
+    // }
+    // public function editform($offer_id)
+    // {
+    //     $offer = offerlist::findOrFail($offer_id);
+    //     $restaurants = restaurantslist::pluck('restaurantname', 'id');
+
+    //     if ($offer->restaurant_id == Auth::user()->restaurants) {
+    //         return view('admin.offer.editoffers', compact('offer', 'restaurants'));
+    //     }
+
+    //     return redirect()->route('admin.offersofrestaurants.list')->with('error', 'Unauthorized or offer not found.');
+    // }
     public function editform($offer_id)
-    {
-        $offer = offerlist::findOrFail($offer_id);
-        $restaurants = restaurantslist::pluck('restaurantname', 'id');
-        return view('admin.offer.editoffers', compact('offer', 'restaurants'));
+{
+    $offer = offerlist::findOrFail($offer_id);
+    $currentUser = Auth::user();
+    $userRestaurantId = $currentUser->restaurants;
+
+    // Ensure the offer belongs to the user's restaurant
+    if ($offer->restaurant_id != $userRestaurantId) {
+        return redirect()->route('admin.offersofrestaurants.list')->with('error', 'Unauthorized or offer not found.');
     }
+
+    // Fetch only the restaurant that matches the user's restaurant ID
+    $restaurants = restaurantslist::where('id', $userRestaurantId)->pluck('restaurantname', 'id');
+
+    return view('admin.offer.editoffers', compact('offer', 'restaurants'));
+}
+
+
 
     public function update(Request $request, $offer_id)
     {
@@ -106,6 +166,7 @@ class OfferController extends Controller
             return redirect()->route('admin.offersofrestaurants.list')->with('success', 'Offer updated successfully!');
         }
     }
+    
     public function searchOffers(Request $request)
     {
         $search = $request->input('search');

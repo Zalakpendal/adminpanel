@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Restaurants\restaurantslist;
 use App\Models\User;
 use DB;
 use Hash;
@@ -75,8 +76,9 @@ class UserController extends Controller
 
     public function create()
     {
+        $restaurants = restaurantslist::pluck('restaurantname', 'id');
         $roles = Role::pluck('name', 'name')->all();
-        return view('role-permission.user.create', ['roles' => $roles]);
+        return view('role-permission.user.create', ['roles' => $roles,'restaurants'=>$restaurants]);
     }
     public function store(Request $request)
     {
@@ -85,7 +87,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:admins,email',
             'password' => 'required',
-            'roles' => 'required'
+            'roles' => 'required',
+            'restaurants' => 'required'
         ]);
         // $user = User::create([
         //     'name' => $request->name,
@@ -94,6 +97,7 @@ class UserController extends Controller
         //     $user->is_type="admin";
         // ]);
         $user = new User();
+        $user->restaurants = $request->restaurants;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);

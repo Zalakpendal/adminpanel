@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Restaurant;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Restaurants\restaurantslist;
 use App\Models\RestaurantType\typelist;
@@ -17,12 +18,26 @@ class RestaurantsController extends Controller
         $this->middleware('permission:delete restaurant', ['only' => ['destroy']]);
         $this->middleware('permission:view restaurant', ['only' => ['listingpage']]);
     }
+    // public function listingpage()
+    // {
+    //     $data = restaurantslist::sortable()->paginate(3);
+    //     //return view ma blade file no path aapvaano 6e 
+    //     return view('admin.Restaurants.allrestaurantlist', compact('data'));
+    // }
     public function listingpage()
     {
-        $data = restaurantslist::sortable()->paginate(3);
-        //return view ma blade file no path aapvaano 6e 
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants;
+
+        if ($restaurantId) {
+            $data = restaurantslist::where('id', $restaurantId)->sortable()->paginate(3);
+        } else {
+            $data = restaurantslist::sortable()->paginate(3);
+        }
+
         return view('admin.Restaurants.allrestaurantlist', compact('data'));
     }
+
     public function addrestaurantform()
     {
         // $restaurantTypes = typelist::pluck('restauranttype', 'id');

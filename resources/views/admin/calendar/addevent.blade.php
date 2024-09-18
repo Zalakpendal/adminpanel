@@ -33,7 +33,8 @@
 
     .form-group input[type="text"],
     .form-group input[type="date"],
-    .form-group input[type="color"] {
+    .form-group input[type="color"],
+    #restaurants {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
@@ -82,6 +83,15 @@
 <div class="addevent">
     <form action="{{ route('admin.calendar.store') }}" method="POST">
         @csrf
+        <div class="mb-3">
+        <label for="">Restaurants</label>
+        <select name="restaurants" class="form-control">
+            <option value="">Select Restaurants</option>
+            @foreach ($restaurants as $id => $restaurantsname)
+            <option value="{{$id}}"> {{$restaurantsname}} </option>
+            @endforeach
+        </select>
+    </div>
         <div class="form-group">
             <label for="title">Event Name</label>
             <input type="text" id="title" name="title">
@@ -111,3 +121,4 @@
     </form>
 </div>
 @endsection
+

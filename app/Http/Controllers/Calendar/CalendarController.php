@@ -4,13 +4,22 @@ namespace App\Http\Controllers\Calendar;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event; // Ensure correct model import
+use App\Models\Restaurants\restaurantslist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
+    
     public function index()
     {
-        $events = Event::all();
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants;
+        if ($restaurantId) {
+            $events = Event::where('restaurant_id', $restaurantId)->get();
+        } else {
+            $events = Event::all();
+        }
         $formattedEvents = [];
         foreach ($events as $event) {
             $formattedEvents[] = [
@@ -28,7 +37,17 @@ class CalendarController extends Controller
 
     public function create()
     {
-        return view('admin.calendar.addevent');
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants; 
+
+        if ($restaurantId) {
+            $restaurants = restaurantslist::where('id', $restaurantId)->pluck('restaurantname', 'id');
+        }
+        else{
+            $restaurants = restaurantslist::where('status', '1')->pluck('restaurantname', 'id');
+        }
+        return view('admin.calendar.addevent',['restaurants'=>$restaurants]);
+        
     }
 
     public function store(Request $request)
@@ -40,13 +59,28 @@ class CalendarController extends Controller
             'color' => 'nullable|string|max:7',
         ]);
 
-        Event::create($validated);
+        $event = new Event();
+        $event->restaurant_id = $request->restaurants;
+        $event->title = $request->title;
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
+        $event->color = $request->color;
+        $event->save();
+       
+        // Event::create($validated);
         return redirect()->route('admin.calendar.calendar')->with('success', 'Event added successfully.');
     }
 
     public function list()
     {
-        $events = Event::all();
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants;
+        if ($restaurantId) {
+            $events = Event::where('restaurant_id', $restaurantId)->get();
+        } else {
+            $events = Event::all();
+        }
+        // $events = Event::all();
         return view('admin.calendar.displayeventstable', ['events' => $events]);
     }
 
@@ -79,3 +113,4 @@ class CalendarController extends Controller
     }
 
 }
+
