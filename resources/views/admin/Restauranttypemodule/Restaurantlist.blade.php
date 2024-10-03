@@ -4,6 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .restaurantlisting {
@@ -123,11 +125,11 @@
     th .sortable {
         color: black;
     }
-    table tbody tr:hover {
-    background-color: #dcdcdc; 
-    cursor: pointer; 
-}
 
+    table tbody tr:hover {
+        background-color: #dcdcdc;
+        cursor: pointer;
+    }
 </style>
 
 
@@ -180,46 +182,52 @@
             </tr>
         </thead>
         <tbody>
+        @if ($data->isEmpty())
+        <tr>
+            <td colspan="3" class="text-center">No records found</td>
+        </tr>
+        @else
             @foreach ($data as $restauranttype)
-                <tr>
-                    <td>{{ $restauranttype->restauranttype }}</td>
-                    <td>
-                        <span class="{{ $restauranttype->status == 1 ? 'status-active' : 'status-inactive' }}">
-                            {{ $restauranttype->status == 1 ? 'Active' : 'Inactive' }}
-                        </span>
-                    </td>
+            <tr>
+                <td>{{ $restauranttype->restauranttype }}</td>
+                <td>
+                    <span class="{{ $restauranttype->status == 1 ? 'status-active' : 'status-inactive' }}">
+                        {{ $restauranttype->status == 1 ? 'Active' : 'Inactive' }}
+                    </span>
+                </td>
 
-                    <td>
-                        <div class="action-icons">
-                            <button class="edit">
-                                @can('update restauranttype')
-                                    <a href="{{ route('admin.restaurant.editform', [$restauranttype->id]) }}"><i
-                                            class="fas fa-edit"></i></a>
-                                @endcan
-                            </button>
-                            @can('delete restauranttype')
-                                <form action="{{ route('admin.restaurant.delete', [$restauranttype->id]) }}" method="get"
-                                    class="delete-form" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="delete delete-btn">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+                <td>
+                    <div class="action-icons">
+                        <button class="edit">
+                            @can('update restauranttype')
+                                <a href="{{ route('admin.restaurant.editform', [$restauranttype->id]) }}"><i
+                                        class="fas fa-edit"></i></a>
                             @endcan
-
-                            <form action="{{ route('admin.restaurant.toggleStatus', [$restauranttype->id]) }}" method="POST"
-                                style="display: inline;">
+                        </button>
+                        @can('delete restauranttype')
+                            <form action="{{ route('admin.restaurant.delete', [$restauranttype->id]) }}" method="get"
+                                class="delete-form" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="statusbtn">
-                                    <i
-                                        class="fas {{ $restauranttype->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                <button type="submit" class="delete delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
+                        @endcan
 
-                        </div>
-                    </td>
-                </tr>
+                        <form action="{{ route('admin.restaurant.toggleStatus', [$restauranttype->id]) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            <button type="submit" class="statusbtn">
+                                <i
+                                    class="fas {{ $restauranttype->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </td>
+            </tr>
             @endforeach
+            @endif
         </tbody>
     </table>
     <div class="pagination">

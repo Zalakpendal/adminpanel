@@ -20,7 +20,7 @@ class Admin
     {
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user->hasRole(['admin','super-admin'])) {
+            if ($user->hasRole(['admin','super-admin','chef'])) {
                 return $next($request);
             }
             abort(403);

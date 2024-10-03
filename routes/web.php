@@ -74,7 +74,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => ['admin'], 'prefix' => 'ad
 Route::get('editprofile', [UserController::class, 'editprofile'])->name('editprofile');
 Route::post('updateprofile', [UserController::class, 'updateProfile'])->name('updateProfile');
 
-    
+    // web.php
+Route::get('/profile/change-password', [UserController::class, 'showChangePasswordForm'])->name('changePassword');
+Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('changePassword.submit');
+
 
 
 
@@ -170,6 +173,4 @@ Route::post('updateprofile', [UserController::class, 'updateProfile'])->name('up
 
 
 
-// Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

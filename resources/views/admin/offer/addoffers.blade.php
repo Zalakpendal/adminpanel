@@ -4,7 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
-        font-size: 24px; /* Adjust font size for clarity */
+        font-size: 24px;
+        color: #333;
     }
 
     .form-container {
@@ -15,34 +16,34 @@
 
     .form {
         width: 100%;
-        max-width: 960px; /* Adjust max-width to fit your design */
+        max-width: 960px; 
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #f9f9f9;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         box-sizing: border-box;
-        margin: 0 auto; /* Center horizontally but respect max-width */
+        margin: 0 auto; 
     }
 
     .form-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px; /* Space between fields */
-        margin-bottom: 20px; /* Space below form-row */
+        gap: 20px; 
+        margin-bottom: 20px; 
     }
 
     .form-group {
         flex: 1;
-        min-width: calc(50% - 20px); /* Two columns with a gap */
-        margin-bottom: 15px; /* Space below each form-group */
+        min-width: calc(50% - 20px); 
+        margin-bottom: 15px;
     }
 
     .form-group label {
         display: block;
         margin-bottom: 8px;
         color: #555;
-        font-size: 14px; /* Smaller font size for labels */
+        font-size: 14px; 
     }
 
     .form-group label.required::after {
@@ -55,23 +56,26 @@
     .form-group select,
     .form-group textarea {
         width: 100%;
-        padding: 8px; /* Reduced padding for more compact appearance */
+        padding: 8px; 
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-sizing: border-box; /* Include padding and border in width */
+        box-sizing: border-box; 
     }
 
     .form-group input::placeholder {
-        color: #aaa; /* Light color for placeholder text */
+        color: #aaa; 
     }
 
-    .form-group .error {
-        color: red;
-        font-size: 14px; /* Increase font size for better readability */
-        font-weight: bold; /* Make the font bold for emphasis */
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+        border-color: #f44336;
+    }
+
+    .form-group.error .error-message {
+        color: #f44336;
+        font-size: 14px;
         margin-top: 5px;
-        display: block;
-        padding: 5px 0; /* Add padding for spacing */
     }
 
     .form-actions {
@@ -87,7 +91,7 @@
 
     .cancel,
     .save {
-        padding: 8px 12px; /* Adjusted padding */
+        padding: 8px 12px; 
         cursor: pointer;
         border: none;
         border-radius: 4px;
@@ -119,17 +123,6 @@
     .buttons a:hover {
         color: white;
     }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .form-row {
-            flex-direction: column; /* Stack fields vertically on small screens */
-        }
-
-        .form-group {
-            min-width: 100%; /* Full width for each field */
-        }
-    }
 </style>
 
 <div class="title">
@@ -149,79 +142,79 @@
             @csrf
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('restaurant_id') ? 'error' : '' }}">
                     <label for="restaurant" class="required">Restaurant Name</label>
                     <select id="restaurant" name="restaurant_id">
                         <option value="" disabled selected>Select Restaurant</option>
                         @foreach($restaurants as $id => $restaurant)
-                            <option value="{{ $id }}">{{ $restaurant }}</option>
+                            <option value="{{ $id }}" {{ old('restaurant_id') == $id ? 'selected' : '' }}>{{ $restaurant }}</option>
                         @endforeach 
                     </select>
-                    @error('restaurant_id')
-                        <span class="error">*Please select a restaurant</span>
-                    @enderror
+                    @if ($errors->has('restaurant_id'))
+                        <div class="error-message">{{ $errors->first('restaurant_id') }}</div>
+                    @endif
                 </div>
 
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('offer_name') ? 'error' : '' }}">
                     <label for="offer_name" class="required">Offer Name</label>
-                    <input type="text" id="offer_name" name="offer_name" placeholder="e.g., Summer Sale">
-                    @error('offer_name')
-                        <span class="error">*Please enter offer name</span>
-                    @enderror
+                    <input type="text" id="offer_name" maxlength="50" name="offer_name" placeholder="e.g., weekend offer" value="{{ old('offer_name') }}">
+                    @if ($errors->has('offer_name'))
+                        <div class="error-message">{{ $errors->first('offer_name') }}</div>
+                    @endif
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('coupon_no') ? 'error' : '' }}">
                     <label for="coupon_name" class="required">Coupon Code</label>
-                    <input type="text" id="coupon_name" name="coupon_no" placeholder="e.g., SUMMER2024">
-                    @error('coupon_no')
-                        <span class="error">*Please enter coupon code</span>
-                    @enderror
+                    <input type="text" id="coupon_name" maxlength="50" name="coupon_no" placeholder="e.g., Sunday2024" value="{{ old('coupon_no') }}">
+                    @if ($errors->has('coupon_no'))
+                        <div class="error-message">{{ $errors->first('coupon_no') }}</div>
+                    @endif
                 </div>
 
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('start_date') ? 'error' : '' }}">
                     <label for="coupon_start_date" class="required">Start Date</label>
-                    <input type="date" id="coupon_start_date" name="start_date">
-                    @error('coupon_validity')
-                        <span class="error">*Please enter coupon validity</span>
-                    @enderror
+                    <input type="date" id="coupon_start_date" name="start_date" value="{{ old('start_date') }}">
+                    @if ($errors->has('start_date'))
+                        <div class="error-message">{{ $errors->first('start_date') }}</div>
+                    @endif
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('coupon_validity') ? 'error' : '' }}">
                     <label for="coupon_validity" class="required">Coupon Validity</label>
-                    <input type="date" id="coupon_validity" name="coupon_validity">
-                    @error('coupon_validity')
-                        <span class="error">*Please enter coupon validity</span>
-                    @enderror
+                    <input type="date" id="coupon_validity" name="coupon_validity" value="{{ old('coupon_validity') }}">
+                    @if ($errors->has('coupon_validity'))
+                        <div class="error-message">{{ $errors->first('coupon_validity') }}</div>
+                    @endif
                 </div>
 
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('coupon_time') ? 'error' : '' }}">
                     <label for="coupon_time" class="required">Coupon Time</label>
-                    <input type="text" id="coupon_time" name="coupon_time" placeholder="e.g., 10:00 AM">
-                    @error('coupon_time')
-                        <span class="error">*Please enter coupon time</span>
-                    @enderror
+                    <input type="text" id="coupon_time" name="coupon_time" placeholder="e.g., 24hr" value="{{ old('coupon_time') }}">
+                    @if ($errors->has('coupon_time'))
+                        <div class="error-message">{{ $errors->first('coupon_time') }}</div>
+                    @endif
                 </div>
             </div>
 
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('amount') ? 'error' : '' }}">
                     <label for="amount" class="required">Amount</label>
-                    <input type="text" id="amount" name="amount" placeholder="e.g., 50">
-                    @error('amount')
-                        <span class="error">*Please enter amount</span>
-                    @enderror
+                    <input type="text" id="amount" name="amount" maxlength="50" placeholder="e.g., 50% off" value="{{ old('amount') }}">
+                    @if ($errors->has('amount'))
+                        <div class="error-message">{{ $errors->first('amount') }}</div>
+                    @endif
                 </div>
 
-                <div class="form-group">
+                <div class="form-group {{ $errors->has('minimum_price') ? 'error' : '' }}">
                     <label for="minimum_price" class="required">Minimum Price</label>
-                    <input type="number" id="minimum_price" name="minimum_price" placeholder="e.g., 100">
-                    @error('minimum_price')
-                        <span class="error">*Please enter minimum price</span>
-                    @enderror
+                    <input type="number" id="minimum_price" name="minimum_price" min="0" placeholder="e.g., 100" value="{{ old('minimum_price') }}">
+                    @if ($errors->has('minimum_price'))
+                        <div class="error-message">{{ $errors->first('minimum_price') }}</div>
+                    @endif
                 </div>
             </div>
 

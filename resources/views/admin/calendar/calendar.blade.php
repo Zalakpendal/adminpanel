@@ -2,8 +2,10 @@
 
 @section('content')
 <style>
-    .title {
+    .title h2{
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .buttons {
@@ -11,8 +13,9 @@
     }
 
     #calendar {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
+        padding: 10px;
     }
 
     .hidden {

@@ -17,9 +17,7 @@
     .form {
         width: 100%;
         max-width: 1200px;
-        /* Set a max-width for large screens */
         margin: 0 auto;
-        /* Center the form horizontally */
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -29,13 +27,11 @@
 
     .form-group {
         margin-bottom: 20px;
-        /* Consistent margin-bottom for spacing */
     }
 
     .form-group label {
         display: block;
         margin-bottom: 8px;
-        /* Consistent margin-bottom for labels */
         color: #555;
         font-size: 16px;
     }
@@ -49,7 +45,6 @@
         border-radius: 4px;
         box-sizing: border-box;
         margin-bottom: 8px;
-        /* Consistent margin-bottom for inputs */
     }
 
     .form-group input[type="text"],
@@ -133,12 +128,6 @@
         object-fit: cover;
         display: none;
     }
-
-    @media (max-width: 768px) {
-        .form-row>div {
-            min-width: 100%;
-        }
-    }
 </style>
 
 <div class="title">
@@ -160,7 +149,7 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('restaurantName') ? 'error' : '' }}">
                     <label for="restaurantName">Restaurant Name <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="restaurantName" name="restaurantName" placeholder="Enter restaurant name"
+                    <input type="text" id="restaurantName" name="restaurantName" maxlength="100" placeholder="Enter restaurant name"
                         value="{{ old('restaurantName') }}">
                     @if ($errors->has('restaurantName'))
                         <div class="error-message">{{ $errors->first('restaurantName') }}</div>
@@ -168,7 +157,7 @@
                 </div>
                 <div class="form-group {{ $errors->has('email') ? 'error' : '' }}">
                     <label for="email">Email <span style="color: #f44336;">*</span></label>
-                    <input type="email" id="email" name="email" placeholder="Enter email address"
+                    <input type="email" id="email" name="email" maxlength="100" placeholder="Enter email address"
                         value="{{ old('email') }}">
                     @if ($errors->has('email'))
                         <div class="error-message">{{ $errors->first('email') }}</div>
@@ -203,7 +192,7 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('address') ? 'error' : '' }}">
                     <label for="address">Address <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="address" name="address" placeholder="Enter restaurant address"
+                    <input type="text" id="address" name="address" maxlength="255" placeholder="Enter restaurant address"
                         value="{{ old('address') }}">
                     @if ($errors->has('address'))
                         <div class="error-message">{{ $errors->first('address') }}</div>
@@ -214,7 +203,7 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('description') ? 'error' : '' }}">
                     <label for="description">Description <span style="color: #f44336;">*</span></label>
-                    <textarea id="description" name="description" rows="4"
+                    <textarea id="description" name="description" rows="4" maxlength="255"
                         placeholder="Enter restaurant description">{{ old('description') }}</textarea>
                     @if ($errors->has('description'))
                         <div class="error-message">{{ $errors->first('description') }}</div>

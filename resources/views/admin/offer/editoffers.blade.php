@@ -4,7 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
-        font-size: 24px; /* Adjust font size for clarity */
+        font-size: 24px;
+        color: #333; /* Adjust font size for clarity */
     }
 
     .form-container {
@@ -178,7 +179,7 @@
 
                 <div class="form-group">
                     <label for="offer_name" class="required">Offer Name</label>
-                    <input type="text" id="offer_name" name="offer_name" value="{{ $offer->offername }}" placeholder="e.g., Summer Sale">
+                    <input type="text" id="offer_name" maxlength="50" name="offer_name" value="{{ $offer->offername }}" placeholder="e.g., Summer Sale">
                     @error('offer_name')
                         <span class="error">*Please enter offer name</span>
                     @enderror
@@ -188,7 +189,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="coupon_no" class="required">Coupon Code</label>
-                    <input type="text" id="coupon_no" name="coupon_no" value="{{ $offer->coupon_no }}" placeholder="e.g., SUMMER2024">
+                    <input type="text" id="coupon_no" maxlength="50" name="coupon_no" value="{{ $offer->coupon_no }}" placeholder="e.g., SUMMER2024">
                     @error('coupon_no')
                         <span class="error">*Please enter coupon code</span>
                     @enderror
@@ -224,7 +225,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="amount" class="required">Amount</label>
-                    <input type="text" id="amount" name="amount" step="0.01" value="{{ $offer->amount }}" placeholder="e.g., 50">
+                    <input type="text" id="amount" maxlength="50" name="amount" step="0.01" value="{{ $offer->amount }}" placeholder="e.g., 50">
                     @error('amount')
                         <span class="error">*Please enter amount</span>
                     @enderror

@@ -18,29 +18,8 @@ class RestaurantsController extends Controller
         $this->middleware('permission:delete restaurant', ['only' => ['destroy']]);
         $this->middleware('permission:view restaurant', ['only' => ['listingpage']]);
     }
-    // public function listingpage()
-    // {
-    //     $data = restaurantslist::sortable()->paginate(3);
-    //     //return view ma blade file no path aapvaano 6e 
-    //     return view('admin.Restaurants.allrestaurantlist', compact('data'));
-    // }
-    public function listingpage()
-    {
-        $currentUser = Auth::user();
-        $restaurantId = $currentUser->restaurants;
-
-        if ($restaurantId) {
-            $data = restaurantslist::where('id', $restaurantId)->sortable()->paginate(3);
-        } else {
-            $data = restaurantslist::sortable()->paginate(3);
-        }
-
-        return view('admin.Restaurants.allrestaurantlist', compact('data'));
-    }
-
     public function addrestaurantform()
     {
-        // $restaurantTypes = typelist::pluck('restauranttype', 'id');
         $restaurantTypes = typelist::where('status', '1')->pluck('restauranttype', 'id');
         return view('admin.Restaurants.addrestaurant', compact('restaurantTypes'));
     }
@@ -64,8 +43,6 @@ class RestaurantsController extends Controller
 
             return redirect()->route('admin.allrestaurants.list')->with('error', 'Restaurant already exists.');
         }
-
-        // If restaurant does not exist, proceed with insertion
         $data = new restaurantslist;
         $data->restaurantname = $request->restaurantName;
         $data->email = $request->email;
@@ -101,8 +78,9 @@ class RestaurantsController extends Controller
 
     public function editform($id)
     {
+        $restaurantTypes = typelist::where('status', '1')->pluck('restauranttype', 'id');
         $data = restaurantslist::find($id);
-        return view('admin/Restaurants/editform', compact('data', 'id'));
+        return view('admin/Restaurants/editform', compact('data', 'id','restaurantTypes'));
     }
 
     public function updatedata(Request $request, $id)
@@ -126,12 +104,20 @@ class RestaurantsController extends Controller
 
         return redirect()->route('admin.allrestaurants.list')->with('success', 'Status updated successfully.');
     }
-
-    public function search(Request $request)
+    public function listingpage(Request $request)
     {
-        $search = $request->input('search');
-        $data = restaurantslist::where('restaurantname', 'LIKE', "%{$search}%")->paginate(3);
-        return view('admin.Restaurants.allrestaurantlist', compact('data'));
-    }
+        $currentUser = Auth::user();
+        $restaurantId = $currentUser->restaurants;
+        $allRestaurants = restaurantslist::all();
 
+        if ($request->has('restaurant_id') && $request->restaurant_id != '') {
+            $data = restaurantslist::where('id', $request->restaurant_id)->sortable()->paginate(3);
+        } elseif ($restaurantId) {
+            $data = restaurantslist::where('id', $restaurantId)->sortable()->paginate(3);
+        } else {
+            $data = restaurantslist::sortable()->paginate(3);
+        }
+
+        return view('admin.Restaurants.allrestaurantlist', compact('data', 'allRestaurants'));
+    }
 }

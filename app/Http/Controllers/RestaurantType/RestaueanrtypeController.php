@@ -18,7 +18,7 @@ class RestaueanrtypeController extends Controller
     public function addrestauranttypeform(Request $request)
     {
         $request->validate([
-            'restaurant_type' => 'required'
+            'restaurant_type' => 'required|string|max:50'
         ]);
         $exists = typelist::where('restauranttype', $request->restaurant_type)->exists();
 

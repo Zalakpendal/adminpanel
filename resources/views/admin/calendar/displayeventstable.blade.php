@@ -1,8 +1,10 @@
 @extends('admin/layout/master')
 @section('content')
 <style>
-    .title {
+    .title h2{
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     table {
@@ -81,6 +83,11 @@
         </tr>
     </thead>
     <tbody>
+    @if ($events->isEmpty())
+        <tr>
+            <td colspan="5" class="text-center">No Events</td>
+        </tr>
+        @else
         @foreach ($events as $event)
         <tr data-id="{{ $event->id }}">
             <td>{{ $event->title }}</td>
@@ -97,6 +104,7 @@
             </td>
         </tr>
         @endforeach
+        @endif
     </tbody>
 </table>
 

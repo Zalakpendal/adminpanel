@@ -3,12 +3,13 @@
 @section('content')
 <style>
     .title {
-        padding: 20px;
-        /* text-align: center; */
+        padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .addevent {
-        max-width: 500px;
+        max-width: 700px;
         margin: 0 auto;
         padding: 20px;
         border: 1px solid #ddd;
@@ -23,27 +24,32 @@
 
     .form-group {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
     }
 
     .form-group label {
-        margin-bottom: 5px;
+        width: 150px;
+        margin-right: 20px;
         font-weight: bold;
     }
 
     .form-group input[type="text"],
     .form-group input[type="date"],
     .form-group input[type="color"],
-    #restaurants {
+    .form-group select {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 16px;
+        flex-grow: 1;
+        width: 100%;
     }
 
     .form-group input[type="color"] {
         padding: 0;
-        border: none;
+        width: 60px;
+        height: 40px;
         cursor: pointer;
     }
 
@@ -56,6 +62,7 @@
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin-top: 10px;
     }
 
     button[type="submit"]:hover {
@@ -66,6 +73,10 @@
         color: red;
         font-size: 14px;
     }
+
+    .breadcrumb {
+        margin: 10px 0;
+    }
 </style>
 
 <div class="title">
@@ -74,31 +85,33 @@
 
 <div class="homeredirection">
     <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{route('admin.dashbord')}}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{route('admin.calendar.calendar')}}">Calendar</a></li>
-    <li class="breadcrumb-item">Add Event</li>
+        <li class="breadcrumb-item"><a href="{{route('admin.dashbord')}}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.calendar.calendar')}}">Calendar</a></li>
+        <li class="breadcrumb-item">Add Event</li>
     </ol>
 </div>
 
 <div class="addevent">
     <form action="{{ route('admin.calendar.store') }}" method="POST">
         @csrf
-        <div class="mb-3">
-        <label for="">Restaurants</label>
-        <select name="restaurants" class="form-control">
-            <option value="">Select Restaurants</option>
-            @foreach ($restaurants as $id => $restaurantsname)
-            <option value="{{$id}}"> {{$restaurantsname}} </option>
-            @endforeach
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="restaurants">Restaurants</label>
+            <select name="restaurants" id="restaurants">
+                <option value="">Select Restaurant</option>
+                @foreach ($restaurants as $id => $restaurantsname)
+                <option value="{{ $id }}">{{ $restaurantsname }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="form-group">
             <label for="title">Event Name</label>
-            <input type="text" id="title" name="title">
+            <input type="text" id="title" name="title" maxlength="100" placeholder="Enter event name">
             @error('title')
                 <span class="error">{{ $message }}</span>
             @enderror
         </div>
+
         <div class="form-group">
             <label for="start_date">Start Date</label>
             <input type="date" id="start_date" name="start_date">
@@ -106,6 +119,7 @@
                 <span class="error">{{ $message }}</span>
             @enderror
         </div>
+
         <div class="form-group">
             <label for="end_date">End Date</label>
             <input type="date" id="end_date" name="end_date">
@@ -113,12 +127,13 @@
                 <span class="error">{{ $message }}</span>
             @enderror
         </div>
+
         <div class="form-group">
             <label for="color">Color</label>
             <input type="color" id="color" name="color">
         </div>
+
         <button type="submit">Save Event</button>
     </form>
 </div>
 @endsection
-

@@ -22,7 +22,6 @@ class CategoryController extends Controller
         return view('admin.category.categorylisting',compact('data'));
     }
   
-
     public function addcategoryform()
     {
         return view('admin.category.addcategory');

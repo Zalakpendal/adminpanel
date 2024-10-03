@@ -4,6 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .restaurantlisting {
@@ -190,24 +192,16 @@
     <table>
         <thead>
             <tr>
-                <th>
-                    <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'restaurantname', 'direction' => request('sort') == 'restaurantname' && request('direction') == 'asc' ? 'desc' : 'asc']) }}"
-                        class="sortable">
-                        Restaurant Name
-                        <i
-                            class="fa {{ request('sort') == 'restaurantname' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
-                    </a>
-                </th>
-                <th>
-                    <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'offername', 'direction' => request('sort') == 'offername' && request('direction') == 'asc' ? 'desc' : 'asc'])}}"
-                        class="sortable">
-                        Offer Name
-                        <i
-                            class="fa {{ request('sort') == 'offername' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
-                    </a>
-                </th>
+            <th>Restaurant Name</th> <!-- No sorting link or icon -->
+            <th>Offer Name</th> <!-- No sorting link or icon -->
 
-                <th>Start-Date</th>
+            <th>
+                <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'start_date', 'direction' => request('sort') == 'start_date' && request('direction') == 'asc' ? 'desc' : 'asc']) }}"
+                   class="sortable">
+                    Start-Date
+                    <i class="fa {{ request('sort') == 'start_date' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
+                </a>
+            </th>
 
                 <th>
                     <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'coupon_validity', 'direction' => request('sort') == 'coupon_validity' && request('direction') == 'asc' ? 'desc' : 'asc']) }}"
@@ -246,6 +240,11 @@
             </tr>
         </thead>
         <tbody>
+        @if ($offers->isEmpty())
+        <tr>
+            <td colspan="9" class="text-center">No records found</td>
+        </tr>
+        @else
             @foreach($offers as $offer)
                 <tr>
                     <td>{{ $offer->restaurant->restaurantname }}</td>
@@ -295,6 +294,7 @@
                     </td>
                 </tr>
             @endforeach
+            @endif
         </tbody>
     </table>
     <div class="pagination">

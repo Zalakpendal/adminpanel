@@ -3,6 +3,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
     .actions {
         align-items: center;
@@ -15,15 +17,27 @@
         display: block;
         margin-bottom: 8px;
         color: #555;
-        font-size: 18px;
+        font-size: 16px;
     }
 
-    input {
+    /* form{
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-sizing: border-box;
+    } */
+    input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        margin-bottom: 10px;
+        margin-bottom: 0;
+        width: 400px; /* Approximate width for 50 characters */
+        flex-grow: 1;
+        border-color: #f44336;
     }
     .btn-primary {
         background-color: #0056b3;
@@ -38,15 +52,31 @@
         padding: 10px;
         margin-left: 10px;
     }
-    .submit-button {
-        padding: 10px 15px;
-        cursor: pointer;
+    .submit-button{
+        padding:7px 10px 7px 10px;
         border: none;
+        cursor: pointer;
         border-radius: 4px;
         color: white;
         background-color: #3C5B6F;
-        float: right;
-    } 
+    }
+    .card-body {
+        display: flex;
+        justify-content: center;
+    }
+     .form-group {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        flex-direction: row;
+        gap: 20px; /* Spacing between input and button */
+    }
+    .required {
+        color: #f44336; /* Red color for required fields */
+    }
 </style>
 
 <div class="title">
@@ -58,24 +88,21 @@
     </ol>
 </div>
 <div class="actions">
-    <button class="btn btn-primary" id="addtypes"><a href="{{url('role')}}">back</a></button>
+    <button class="btn btn-primary" id="addtypes"><a href="{{url('role')}}">Back</a></button>
 </div>
 <div class="card-body">
     <form action="{{url('role')}}" method="POST">
     @csrf
 
-    <div class="mb-3">
-        <label for="">Role Name</label>
-        <input type="text" name="name" class="form-control">
+    <div class="form-group">
+        <label for="">Role Name<span class="required">*</span></label>
+        <input type="text" name="name" class="form-control" maxlength="50">
         @if ($errors->any())
             <strong style="color:red">*Please enter Role Name</strong>
         @endif
-    </div>
-    <div class="mb-3">
         <button type="submit" class="submit-button">Save
         </button>
     </div>
-
     </form>
 </div>
 

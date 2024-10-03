@@ -2,12 +2,13 @@
 
 @section('content')
 <style>
-    .title{
+    .title h2{
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
     .images {
         display: flex;
-        /* align-items: center; */
         gap: 10px;
     }
     #imagePreview {
@@ -61,6 +62,14 @@
         background-color: #3C5B6F;
         float: right;
     }    
+    .password{
+        padding: 10px 15px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        background-color: red;
+    }
 </style>
 <div class="title">
     <h2>Edit Profile</h2>
@@ -80,7 +89,7 @@
 @endif
 
 <div class="buttons">
-    <button class="btn btn-primary"><a href="{{route('admin.dashbord')}}">back</a></button>
+    <button class="btn btn-primary"><a href="{{route('admin.dashbord')}}">Back</a></button>
 </div>
 
 <div class="container">
@@ -101,6 +110,9 @@
             </div>
         </div>
 
+        <button class="password">
+    <a href="{{ route('admin.changePassword') }}" style="color: white; text-decoration: none;">Change Password</a>
+</button>
 
         <button type="submit" class="submit-button">Update Profile</button>
     </form>

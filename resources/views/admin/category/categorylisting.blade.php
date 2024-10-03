@@ -3,6 +3,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .categorylisting {
@@ -159,13 +161,12 @@
     <table class="table">
         <thead>
             <tr>
-                <!-- <th>Category Name</th> -->
                 <th>
-                    <a href="{{ route('admin.categories.list', ['sort' => 'categoryname', 'direction' => (request('sort') === 'categoryname' && request('direction') === 'asc') ? 'desc' : 'asc']) }}"
+                    <a href="{{ route('admin.categories.list', ['sort' => 'categoryname', 'direction' => (request('sort') == 'categoryname' && request('direction') == 'asc') ? 'desc' : 'asc']) }}"
                         class="sortable">
                         Category Name
                         <i
-                            class="fa {{ request('sort') === 'categoryname' ? (request('direction') === 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
+                            class="fa {{ request('sort') == 'categoryname' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
                     </a>
                 </th>
                 <th>Image</th>
@@ -174,6 +175,11 @@
             </tr>
         </thead>
         <tbody>
+        @if ($data->isEmpty())
+        <tr>
+            <td colspan="4" class="text-center">No records found</td>
+        </tr>
+        @else
             @foreach ($data as $category)
                 <tr>
                     <td>{{$category->categoryname}}</td>
@@ -210,6 +216,7 @@
                     </td>
                 </tr>
             @endforeach
+            @endif
         </tbody>
     </table>
     <div class="pagination">

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('title','Dashbord3')</title>
+  
   @include('admin.layout.css')
   <!-- Google Font: Source Sans Pro -->  
 </head>
@@ -14,6 +15,12 @@
   <!-- <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div> -->
+  
+  <div id="pageloader" style="display: none;">
+    <i class="fa fa-spinner fa-spin fa-5x fa-fw" style="color: #28282B;"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+
 
   <!-- Navbar -->
   @include('admin.layout.header') 
@@ -40,6 +47,9 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+<!-- <div id="loader">
+    <div class="spinner"></div>
+</div> -->
 
 @include('admin.layout.script')
 

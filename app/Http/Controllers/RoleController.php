@@ -16,12 +16,6 @@ class RoleController extends Controller
         $this->middleware('permission:delete role', ['only' => ['destory']]);
         $this->middleware('permission:view role', ['only' => ['index']]);
     }
-    // public function index()
-    // {
-
-    //     $roles = Role::paginate(5);
-    //     return view('role-permission.role.index', ['roles' => $roles]);
-    // }
     public function index(Request $request)
     {
         $query = Role::query();

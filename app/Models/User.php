@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Restaurants\restaurantslist;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -53,6 +54,9 @@ class User extends Authenticatable
         }
     }
     public $sortable = ['id','name', 'email'];
-    
+    public function restaurant()
+{
+    return $this->belongsTo(restaurantslist::class, 'restaurants', 'id');
+}
     
 }

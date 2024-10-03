@@ -3,6 +3,8 @@
 <style>
      .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
     .form{
         width: 1050px;
@@ -75,7 +77,7 @@
     </div>
         <div class="form-group">
             <label for="restaurant-type">Restaurant Type</label>
-            <input type="text" id="restaurant-type" name="restaurant_type" value="{{$data->restauranttype}}" required>
+            <input type="text" id="restaurant-type" name="restaurant_type" maxlength="50" value="{{$data->restauranttype}}" required>
             <div class="buttons">
             <button type="button" class="cancel"><a href="{{route('admin.restaurant.list')}}">Cancel</a></button>
             <button type="submit" class="save" value="Update">Save</button>

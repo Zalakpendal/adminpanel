@@ -28,33 +28,38 @@ class MenuController extends Controller
 
     public function addmenuform($id)
     {
-        $categories = categorylist::where('status','1')->pluck('categoryname', 'id');
+        $categories = categorylist::where('status', '1')->pluck('categoryname', 'id');
         $restaurant = restaurantslist::where('id', $id)->first();
         return view('admin.menu.addmenu', compact('categories', 'restaurant'));
     }
+
     public function insertmenu(Request $request, $id)
     {
         $request->validate([
             'restaurant_id' => 'required',
             'category_id' => 'required',
             'item_name' => 'required',
-            'item_price' => 'required',
+            'item_price' => 'required|numeric',
             'description' => 'required',
-            'image' => 'required'
+            'image' => 'required|image'
         ]);
-        $existingRestaurant = menulist::where('itemname', $request->item_name)->first();
 
-        if ($existingRestaurant) {
+        $existingRestaurantItem = menulist::where('itemname', $request->item_name)
+            ->where('restaurant_id', $request->restaurant_id)
+            ->first();
 
-            return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])->with('error', 'item already exists.');
+        if ($existingRestaurantItem) {
+            return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])
+                ->with('error', 'Item already exists in this restaurant.');
         }
+
         $data = new menulist;
         $data->restaurant_id = $request->restaurant_id;
         $data->category_id = $request->category_id;
         $data->itemname = $request->item_name;
         $data->price = $request->item_price;
         $data->description = $request->description;
-        $data->status=1;
+        $data->status = 1;
 
         if ($request->file('image')) {
             $filePath = 'menuitemsimages';
@@ -63,13 +68,15 @@ class MenuController extends Controller
         }
 
         $data->save();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])->with('success', 'item added to the menu!');;
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])
+            ->with('success', 'Item added to the menu!');
     }
+
     public function deletemenu($restaurant_id, $menu_id)
     {
         $menu = menulist::where('restaurant_id', $restaurant_id)->where('id', $menu_id)->first();
         $menu->delete();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success','item deleted to the menu');
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success', 'item deleted to the menu');
     }
 
     public function editform($restaurant_id, $menu_id)
@@ -88,10 +95,10 @@ class MenuController extends Controller
         $menuItem->itemname = $request->item_name;
         $menuItem->price = $request->item_price;
         $menuItem->description = $request->description;
-        
+
 
         $menuItem->save();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success','updated successfully');
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success', 'updated successfully');
 
     }
     public function toggleStatus($restaurant_id, $menu_id)
@@ -117,8 +124,8 @@ class MenuController extends Controller
                     });
             });
         }
-        $menuItems = $query->with('category')->get();
+        $menuItems = $query->with('category')->paginate(5);
         $restaurant = restaurantslist::find($restaurant_id);
         return view('admin.menu.menulisting', compact('restaurant', 'menuItems'));
-    }   
+    }
 }

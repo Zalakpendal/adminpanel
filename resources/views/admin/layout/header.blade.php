@@ -9,11 +9,9 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
-       
         @if (Auth::check())
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.editprofile') }}">
-                   
                     @if (Auth::user()->image)
                         <img src="{{ asset(Auth::user()->image) }}" alt="{{ Auth::user()->name }}" class="user-image">
                     @else
@@ -24,13 +22,14 @@
             </li>
             <!-- Logout Link -->
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="confirmLogout(event)">
+                <a class="nav-link logout-button" href="#" onclick="confirmLogout(event)">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </li>
         @endif
     </ul>
 </nav>
+
 <style>
     .user-image {
         width: 30px; 
@@ -39,5 +38,18 @@
         object-fit: cover; 
         margin-right: 5px; 
     }
+    .logout-button {
+        background-color: gray; 
+        color: white; 
+        border-radius: 5px;
+        padding: 8px 12px; 
+        
+    }
+    .logout-button:hover {
+        background-color: gray; 
+        
+    }
+    .logout-button i {
+        margin-right: 5px;
+    }
 </style>
-

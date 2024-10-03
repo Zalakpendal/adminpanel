@@ -150,21 +150,22 @@
 
 <div class="form-container">
     <div class="form">
-        <form action="{{ route('admin.allrestaurants.updatedata', [$id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.allrestaurants.updatedata', [$id]) }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
 
             <div class="form-row">
                 <div class="form-group {{ $errors->has('restaurantName') ? 'error' : '' }}">
                     <label for="restaurantName">Restaurant Name <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="restaurantName" name="restaurantName" placeholder="Enter restaurant name"
-                        value="{{ $data->restaurantname }}">
+                    <input type="text" id="restaurantName" name="restaurantName" maxlength="100"
+                        placeholder="Enter restaurant name" value="{{ $data->restaurantname }}">
                     @if ($errors->has('restaurantName'))
                         <div class="error-message">{{ $errors->first('restaurantName') }}</div>
                     @endif
                 </div>
                 <div class="form-group {{ $errors->has('email') ? 'error' : '' }}">
                     <label for="email">Email <span style="color: #f44336;">*</span></label>
-                    <input type="email" id="email" name="email" placeholder="Enter email address"
+                    <input type="email" id="email" maxlength="100" name="email" placeholder="Enter email address"
                         value="{{ $data->email }}">
                     @if ($errors->has('email'))
                         <div class="error-message">{{ $errors->first('email') }}</div>
@@ -175,10 +176,22 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('restaurantType') ? 'error' : '' }}">
                     <label for="restaurantType">Restaurant Type <span style="color: #f44336;">*</span></label>
-                    <select id="restaurantType" name="restaurantType">
+                    <!-- <select id="restaurantType" name="restaurantType">
                         <option value="" disabled selected>Select Type</option>
-                        <!-- Add options dynamically if applicable -->
+                        @foreach($restaurantTypes as $id => $type)
+                            <option value="{{ $id }}" {{ old('restaurantType') == $id ? 'selected' : '' }}>{{ $type }}
+                            </option>
+                        @endforeach
+                        Add options dynamically if applicable
+                    </select> -->
+                    <select id="restaurantType" name="restaurantType">
+                        <option value="" disabled>Select Type</option>
+                        @foreach($restaurantTypes as $id => $type)
+                            <option value="{{ $id }}" {{ $data->restauranttype == $id ? 'selected' : '' }}>{{ $type }}
+                            </option>
+                        @endforeach
                     </select>
+
                     @if ($errors->has('restaurantType'))
                         <div class="error-message">{{ $errors->first('restaurantType') }}</div>
                     @endif
@@ -196,8 +209,8 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('address') ? 'error' : '' }}">
                     <label for="address">Address <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="address" name="address" placeholder="Enter restaurant address"
-                        value="{{ $data->address }}">
+                    <input type="text" id="address" name="address" maxlength="255"
+                        placeholder="Enter restaurant address" value="{{ $data->address }}">
                     @if ($errors->has('address'))
                         <div class="error-message">{{ $errors->first('address') }}</div>
                     @endif
@@ -207,7 +220,7 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('description') ? 'error' : '' }}">
                     <label for="description">Description <span style="color: #f44336;">*</span></label>
-                    <textarea id="description" name="description" rows="4"
+                    <textarea id="description" name="description" rows="4" maxlength="255"
                         placeholder="Enter restaurant description">{{ $data->discription }}</textarea>
                     @if ($errors->has('description'))
                         <div class="error-message">{{ $errors->first('description') }}</div>
@@ -251,8 +264,6 @@
             }
             reader.readAsDataURL(event.target.files[0]);
         });
-
-        // Show the existing image preview if it exists
         if ($('#imagePreview').attr('src') !== '#') {
             $('#imagePreview').show();
         }

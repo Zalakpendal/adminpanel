@@ -33,4 +33,29 @@
     background-color: steelblue;
     color: #fff;
 }
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active:hover {
+    background-color: steelblue; 
+    color: #fff; 
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
+    background-color: rgba(70, 130, 180, 0.7); 
+    color: #fff; 
+}
+
+</style>
+<style>
+ #pageloader {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); 
+    z-index: 9999; 
+    justify-content: center; 
+    align-items: center; 
+    display: flex; 
+}
 </style>

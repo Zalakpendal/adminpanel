@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+window.onload = function() {
     const links = document.querySelectorAll('.nav-link');
 
     links.forEach(link => {
@@ -103,8 +103,43 @@ document.addEventListener('DOMContentLoaded', function() {
             link.classList.remove('active');
         }
     });
+};
+</script>
+<!-- <script>$('form').on('submit', function() {
+    const loader = document.getElementById('loader');
+    loader.style.display = 'flex'; // Show loader
+});
+</script> -->
+<!-- <script>
+    $(document).ready(function () {
+    $("form").on("submit", function (e) {
+        e.preventDefault(); 
+
+        $("#pageloader").fadeIn(); // Show loader
+
+        
+        setTimeout(function () {
+            $("#pageloader").fadeOut(); // Hide loader
+        }, 2000); // Adjust timeout as needed
+    });
 });
 
+</script> -->
+<script>
+    $(document).ready(function () {
+        $("form").on("submit", function (e) {
+            e.preventDefault(); 
+            
+            $("#pageloader").fadeIn(); 
+            
+            const form = $(this); 
+            this.submit();
+            setTimeout(() => {
+                const redirectUrl = form.attr('action'); 
+                window.location.href = redirectUrl; 
+            }, 2000);
+        });
+    });
 </script>
 
 

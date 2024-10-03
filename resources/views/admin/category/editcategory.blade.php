@@ -87,7 +87,7 @@
 
         <div class="form-group">
             <label for="categoryName">Category Name</label>
-            <input type="text" id="categoryName" name="categoryName" value="{{ $data->categoryname }}">
+            <input type="text" id="categoryName" maxlength="50" name="categoryName" value="{{ $data->categoryname }}">
         </div>
 
         <div class="form-group">
@@ -105,7 +105,7 @@
         <div class="form-actions">
             <div class="buttons">
                 <button type="button" class="cancel"><a href="{{ route('admin.categories.list') }}" style="color: white; text-decoration: none;">Cancel</a></button>
-                <button type="submit" class="save">Save</button>
+                <button type="submit" class="save"><a href="{{ route('admin.categories.list') }}" style="color: white; text-decoration: none;">Update</a></button>
             </div>
         </div>
     </form>

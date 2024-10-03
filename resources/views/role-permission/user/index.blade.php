@@ -4,6 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .actions {
@@ -121,10 +123,11 @@
         <thead>
             <tr>
                 <th>
-                    <a href="{{ route('users.index', ['sort' => 'id', 'direction' => (request('direction') === 'asc' ? 'desc' : 'asc') ?? 'asc', 'search' => request('search')]) }}" class="sortable">
+                    <!-- <a href="{{ route('users.index', ['sort' => 'id', 'direction' => (request('direction') === 'asc' ? 'desc' : 'asc') ?? 'asc', 'search' => request('search')]) }}" class="sortable">
                         <span>Id</span>
                         <i class="fa {{ request('sort') == 'id' ? (request('direction') === 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
-                    </a>
+                    </a> -->
+                    #
                 </th>
 
                 <th>
@@ -140,17 +143,18 @@
                         <i class="fa {{ request('sort') == 'email' ? (request('direction') === 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
                     </a>
                 </th>
-
+                <th>Restaurant name</th>
                 <th>Roles</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($users as $user)
+        @forelse ($users as $index => $user)
                 <tr>
-                    <td>{{ $user->id }}</td>
+                <td>{{ $users->firstItem() + $index }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                    <td>{{ $user->restaurant ? $user->restaurant->restaurantname : 'No Restaurant' }}</td>
                     <td>
                         @if (!empty($user->getRoleNames()))
                             @foreach ($user->getRoleNames() as $rolename)
@@ -164,7 +168,8 @@
                         @endcan
 
                         @can('delete user')
-                            <a href="{{ url('users/' . $user->id . '/delete') }}" class="btn btn-danger mx-2">Delete</a>
+                            <!-- <a href="{{ url('users/' . $user->id . '/delete') }}" class="btn btn-danger mx-2">Delete</a> -->
+                            <button class="btn btn-danger mx-2" onclick="confirmDelete('{{ url('users/' . $user->id . '/delete') }}')">Delete</button>
                         @endcan
                     </td>
                 </tr>
@@ -179,4 +184,23 @@
         {{ $users->appends(['search' => request('search'), 'sort' => request('sort'), 'direction' => request('direction')])->onEachSide(1)->links() }}
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(url) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't to delete this",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+</script>
 @endsection

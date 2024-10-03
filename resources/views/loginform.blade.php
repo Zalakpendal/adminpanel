@@ -13,8 +13,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 600px;
-            /* margin: 0; */
+            height: 100vh;
         }
         .login-container {
             background-color: #F7F9F2;
@@ -28,11 +27,9 @@
             width: 120px;
             height: 120px;
             margin-bottom: 10px;
-            margin-top: 0;
         }
         .login-container h2 {
-            margin-top: 5px;
-            margin-bottom: 15px;
+            margin: 10px 0;
             color: #01204E;
         }
         .input-container {
@@ -41,16 +38,12 @@
             margin-bottom: 10px;
             align-items: center;
             border-bottom: 1px solid gray;
-            /* border-radius: 5px; */
         }
-
         .icon {
             padding: 10px;
             color: black;
             min-width: 50px;
             text-align: center;
-            /* border-top-left-radius: 3px; */
-            /* border-bottom-left-radius: 3px; */
         }
         .input-field {
             width: 100%;
@@ -64,10 +57,9 @@
             color: #939185;
             font-size: 15px;
         }
-        .passwordfield{
+        .passwordfield {
             margin-bottom: 20px;
         }
-
         .btn {
             width: 100%;
             padding: 12px;
@@ -82,34 +74,53 @@
         .btn:hover {
             background-color: #153448;
         }
-        .forusername{
+        .forusername {
             margin-bottom: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            background-color: #ffdddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <img src="https://content.jdmagicbox.com/comp/navi-mumbai/f1/022pxx22.xx22.180215143800.m6f1/catalogue/food-junction-kopar-khairane-navi-mumbai-home-delivery-restaurants-8tnfw.jpg" alt="Restaurant Logo">
-        <h2>Login</h2>
-        <form action="{{route('login')}}" method="post">
+<div class="login-container">
+    <img src="https://content.jdmagicbox.com/comp/navi-mumbai/f1/022pxx22.xx22.180215143800.m6f1/catalogue/food-junction-kopar-khairane-navi-mumbai-home-delivery-restaurants-8tnfw.jpg" alt="Restaurant Logo">
+    <h2>Login</h2>
+    
+    @if ($errors->has('credentials'))
+        <div class="error-message">
+            {{ $errors->first('credentials') }}
+        </div>
+    @endif
+
+    <form action="{{ route('login') }}" method="post">
         @csrf
-            <div class="forusername">
+        <div class="forusername">
             <div class="input-container">
                 <i class="fa fa-user icon" style="font-size: 22px"></i>
-                <input class="input-field" type="text" placeholder="Username" name="email">
+                <input class="input-field" type="text" placeholder="Email" name="email">
             </div>
-            @error('email') <font color="red">{{$message}}</font>@enderror
-            </div>
+            @error('email') 
+                <div class="error-message">{{ $message }}</div>
+            @enderror
+        </div>
 
-            <div class="passwordfield">
+        <div class="passwordfield">
             <div class="input-container">
                 <i class="fa fa-key icon" style="font-size: 20px"></i>
                 <input class="input-field" type="password" placeholder="Password" name="password" id="password">
             </div>
-            @error('password') <font color="red">{{$message}}</font>@enderror
-            </div>
-            <button type="submit" class="btn">Login</button>
-        </form>
-    </div>
+            @error('password') 
+                <div class="error-message">{{ $message }}</div>
+            @enderror
+        </div>
+        <button type="submit" class="btn">Login</button>
+    </form>
+</div>
 </body>
 </html>

@@ -4,6 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
     .actions {
         align-items: center;
@@ -95,9 +97,9 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($permissions as $permission)
+        @forelse ($permissions as $index => $permission)
                 <tr>
-                    <td>{{ $permission->id }}</td>
+                <td>{{ $permissions->firstItem() + $index }}</td>
                     <td>{{ $permission->name }}</td>
                     <td>
                         <a href="{{ url('permission/' . $permission->id . '/edit') }}" class="btn btn-success">Edit</a>

@@ -4,6 +4,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
     .actions {
         align-items: center;
@@ -87,15 +89,15 @@
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($roles as $role)
+        @forelse ($roles as $index => $role)
                 <tr>
-                    <td>{{ $role->id }}</td>
+                <td>{{ $roles->firstItem() + $index }}</td>
                     <td>{{ $role->name }}</td>
                     <td>
                         <a href="{{ url('role/' . $role->id . '/give-permissions') }}" class="btn btn-success">Add/Edit Role Permission</a>
@@ -104,10 +106,10 @@
                             <a href="{{ url('role/' . $role->id . '/edit') }}" class="btn btn-success">Edit</a>
                         @endcan
 
-                        @can('delete role')
+                        <!-- @can('delete role') -->
                             <!-- <a href="{{ url('role/' . $role->id . '/delete') }}" class="btn btn-danger mx-2">Delete</a> -->
-                            <button class="btn btn-danger mx-2" onclick="confirmDelete('{{ url('role/' . $role->id . '/delete') }}')">Delete</button>
-                        @endcan
+                            <!-- <button class="btn btn-danger mx-2" onclick="confirmDelete('{{ url('role/' . $role->id . '/delete') }}')">Delete</button> -->
+                        <!-- @endcan -->
                     </td>
                 </tr>
             @empty

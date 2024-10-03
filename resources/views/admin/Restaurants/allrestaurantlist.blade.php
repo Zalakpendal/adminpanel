@@ -3,6 +3,8 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .restaurantlisting {
@@ -36,12 +38,12 @@
         background-color: #f2f2f2;
     }
 
-    .search-input {
+    #search-input {
         border: 1px solid #ddd;
         padding: 5px;
         padding-left: 10px;
         border-radius: 4px 0 0 4px;
-        border-right: none;
+        /* border-right: none; */
     }
 
     .btn {
@@ -108,7 +110,6 @@
 
     .add-menu-btn {
         border: none;
-        /* border: 1px solid #4f6b7d; */
         border-radius: 3px;
     }
 
@@ -155,16 +156,25 @@
 </div>
 
 <div class="restaurantlisting">
-    <form method="GET" action="{{ route('admin.allrestaurants.search') }}">
-            <div class="buttons">
-                <input type="text" placeholder="Search.." name="search" class="search-input" value="{{ request()->query('search') }}">
-                <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
-            </div>
-            
-            @can('create restaurant')
-            <button class="btn" id="addtypes"><a href="{{ route('admin.allrestaurants.add') }}">Add</a></button>
+<form method="GET" action="{{ route('admin.allrestaurants.list') }}">
+        <div class="buttons">
+        @can('search restaurant')
+            <select name="restaurant_id" id="search-input" onchange="this.form.submit()">
+                <option value="">All Restaurant</option>
+                @foreach ($allRestaurants as $restaurant)
+                    <option value="{{ $restaurant->id }}" {{ request('restaurant_id') == $restaurant->id ? 'selected' : '' }}>
+                        {{ $restaurant->restaurantname }}
+                    </option>
+                @endforeach
+            </select>
             @endcan
-        </form>
+        </div>
+    
+        @can('create restaurant')
+            <button class="btn" id="addtypes"><a href="{{ route('admin.allrestaurants.add') }}">Add</a></button>
+        @endcan
+</form>
+       
     <table>
         <thead>
             <tr>
@@ -184,6 +194,11 @@
             </tr>
         </thead>
         <tbody>
+        @if ($data->isEmpty())
+        <tr>
+            <td colspan="5" class="text-center">No records found</td>
+        </tr>
+        @else
             @foreach ($data as $restaurant)
                 <tr>
                     <td>{{ $restaurant->restaurantname }}</td>
@@ -222,11 +237,13 @@
                             </form>
                             <button class="add-menu-btn"> <a
                                     href="{{route('admin.menuofrestaurants.list', ['id' => $restaurant->id])}}"><i
-                                        class="fas fa-arrow-alt-circle-right"></i></a></button>
+                                        class="fas fa-arrow-alt-circle-right"></i></a>
+                            </button>
                         </div>
                     </td>
                 </tr>
             @endforeach
+            @endif
         </tbody>
     </table>
     <div class="pagination">

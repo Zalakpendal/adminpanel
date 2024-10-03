@@ -3,15 +3,18 @@
 <style>
     .title h2 {
         padding: 10px;
+        font-size: 24px;
+        color: #333;
     }
 
     .restaurantlisting {
         margin: 20px;
-    }    
+    }
+
     .buttons {
         display: flex;
     }
-    
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -140,11 +143,11 @@
     th .sortable {
         color: black;
     }
-    table tbody tr:hover {
-    background-color: #dcdcdc; 
-    cursor: pointer; 
-}
 
+    table tbody tr:hover {
+        background-color: #dcdcdc;
+        cursor: pointer;
+    }
 </style>
 
 <div class="title">
@@ -169,8 +172,6 @@
                 value="{{ request('search') }}">
             <button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>
         </div>
-
-
         <button class="btn" id="addtypes"><a
                 href="{{ route('admin.menuofrestaurants.add', ['id' => $restaurant->id]) }}">Add</a></button>
     </form>
@@ -179,13 +180,6 @@
         <thead>
             <tr>
                 <th>Category Name</th>
-                <!-- <th>
-                    <a href="{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id, 'sort' => 'categoryname', 'direction' => (request('sort') === 'categoryname' && request('direction') === 'asc') ? 'desc' : 'asc']) }}"
-                        class="sortable">
-                        Category Name
-                        <i class="fa {{ request('sort') == 'categoryname' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
-                    </a>
-                </th> -->
                 <th>
                     <a href="{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id, 'sort' => 'itemname', 'direction' => (request('sort') === 'itemname' && request('direction') === 'asc') ? 'desc' : 'asc']) }}"
                         class="sortable">
@@ -208,50 +202,55 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($menuItems as $menuItem)
+            @if ($menuItems->isEmpty())
                 <tr>
-                    <td>{{ $menuItem->category->categoryname }}</td>
-                    <td>{{ $menuItem->itemname }}</td>
-                    <td>{{ $menuItem->price }}</td>
-                    <td><img src="{{$menuItem->image }}" alt="Image" style="width:50px; height:50px;"></td>
-                    <td>
-                    <span class="{{ $menuItem->status == 1 ? 'status-active' : 'status-inactive' }}">
-                            {{ $menuItem->status == 1 ? 'Active' : 'Inactive' }}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-icons">
-                            <!-- <button class="edit"> <a href=""> <i class="fas fa-edit"></i></a></button>  -->
-                            @can('update menu')
-                                <a href="{{ route('admin.menuofrestaurants.editform', ['restaurant_id' => $restaurant->id, 'menu_id' => $menuItem->id]) }}"
-                                    class="edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            @endcan
+                    <td colspan="9" class="text-center">No records found</td>
+                </tr>
+            @else
+                @foreach($menuItems as $menuItem)
+                    <tr>
+                        <td>{{ $menuItem->category->categoryname }}</td>
+                        <td>{{ $menuItem->itemname }}</td>
+                        <td>{{ $menuItem->price }}</td>
+                        <td><img src="{{$menuItem->image }}" alt="Image" style="width:50px; height:50px;"></td>
+                        <td>
+                            <span class="{{ $menuItem->status == 1 ? 'status-active' : 'status-inactive' }}">
+                                {{ $menuItem->status == 1 ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                <!-- <button class="edit"> <a href=""> <i class="fas fa-edit"></i></a></button>  -->
+                                @can('update menu')
+                                    <a href="{{ route('admin.menuofrestaurants.editform', ['restaurant_id' => $restaurant->id, 'menu_id' => $menuItem->id]) }}"
+                                        class="edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                @endcan
 
-                            @can('delete menu')
+                                @can('delete menu')
+                                    <form
+                                        action="{{ route('admin.menuofrestaurants.delete', ['restaurant_id' => $menuItem->restaurant_id, 'menu_id' => $menuItem->id]) }}"
+                                        method="get" class="delete-form" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="delete delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                @endcan
+
                                 <form
-                                    action="{{ route('admin.menuofrestaurants.delete', ['restaurant_id' => $menuItem->restaurant_id, 'menu_id' => $menuItem->id]) }}"
-                                    method="get" class="delete-form" style="display:inline;">
+                                    action="{{ route('admin.menuofrestaurants.toggleStatus', ['restaurant_id' => $restaurant->id, 'menu_id' => $menuItem->id]) }}"
+                                    method="POST" style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="delete delete-btn">
-                                        <i class="fas fa-trash-alt"></i>
+                                    <button type="submit" class="statusbtn">
+                                        <i class="fas {{ $menuItem->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                     </button>
                                 </form>
-                            @endcan
-
-                            <form
-                                action="{{ route('admin.menuofrestaurants.toggleStatus', ['restaurant_id' => $restaurant->id, 'menu_id' => $menuItem->id]) }}"
-                                method="POST" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="statusbtn">
-                                    <i
-                                        class="fas {{ $menuItem->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
-                                </button>
-                            </form>
-                    </td>
-                </tr>
-            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
     </table>
     <div class="pagination">
