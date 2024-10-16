@@ -52,7 +52,7 @@
         gap: 20px;
     }
 
-    .form-row > div {
+    .form-row>div {
         flex: 1;
         min-width: calc(50% - 20px);
     }
@@ -128,24 +128,28 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashbord') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('admin.allrestaurants.list') }}">Restaurants</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id]) }}">Menu</a></li>
+        <li class="breadcrumb-item"><a
+                href="{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id]) }}">Menu</a></li>
         <li class="breadcrumb-item">Edit</li>
     </ol>
 </div>
 
 <div class="form-container">
     <div class="form">
-        <form action="{{ route('admin.menuofrestaurants.updateform',['restaurant_id' => $menuItem->restaurant_id, 'menu_id' => $menuItem->id]) }}" method="post" enctype="multipart/form-data">
+        <form
+            action="{{ route('admin.menuofrestaurants.updateform', ['restaurant_id' => $menuItem->restaurant_id, 'menu_id' => $menuItem->id]) }}"
+            method="post" enctype="multipart/form-data">
             @csrf
-            
+
             <div class="form-row">
                 <div class="form-group {{ $errors->has('category_id') ? 'error' : '' }}">
                     <label for="category_id">Select Category <span style="color: #f44336;">*</span></label>
                     <select name="category_id" id="category_id">
                         <option value="" disabled>Select Category</option>
                         @foreach($categories as $id => $category)
-                            <option value="{{ $id }}" {{ $menuItem->category_id == $id ? 'selected' : '' }}>{{ $category }}</option>
-                        @endforeach 
+                            <option value="{{ $id }}" {{ $menuItem->category_id == $id ? 'selected' : '' }}>{{ $category }}
+                            </option>
+                        @endforeach
                     </select>
                     @if ($errors->has('category_id'))
                         <div class="error-message">{{ $errors->first('category_id') }}</div>
@@ -154,7 +158,8 @@
 
                 <div class="form-group {{ $errors->has('item_name') ? 'error' : '' }}">
                     <label for="item_name">Item Name <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="item_name" name="item_name" maxlength="50" value="{{ old('item_name', $menuItem->itemname) }}" required>
+                    <input type="text" id="item_name" name="item_name" maxlength="50"
+                        value="{{ old('item_name', $menuItem->itemname) }}" required>
                     @if ($errors->has('item_name'))
                         <div class="error-message">{{ $errors->first('item_name') }}</div>
                     @endif
@@ -164,7 +169,8 @@
             <div class="form-row">
                 <div class="form-group {{ $errors->has('item_price') ? 'error' : '' }}">
                     <label for="item_price">Item Price <span style="color: #f44336;">*</span></label>
-                    <input type="number" id="item_price" name="item_price" value="{{ old('item_price', $menuItem->price) }}" required>
+                    <input type="number" id="item_price" name="item_price"
+                        value="{{ old('item_price', $menuItem->price) }}" required>
                     @if ($errors->has('item_price'))
                         <div class="error-message">{{ $errors->first('item_price') }}</div>
                     @endif
@@ -172,7 +178,8 @@
 
                 <div class="form-group {{ $errors->has('description') ? 'error' : '' }}">
                     <label for="description">Description <span style="color: #f44336;">*</span></label>
-                    <textarea id="description" name="description" rows="4" maxlength="255" required>{{ old('description', $menuItem->description) }}</textarea>
+                    <textarea id="description" name="description" rows="4" maxlength="255"
+                        required>{{ old('description', $menuItem->description) }}</textarea>
                     @if ($errors->has('description'))
                         <div class="error-message">{{ $errors->first('description') }}</div>
                     @endif
@@ -196,7 +203,8 @@
 
             <div class="form-actions">
                 <div class="buttons">
-                    <button type="button" class="cancel" onclick="window.location='{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id]) }}'">Cancel</button>
+                    <button type="button" class="cancel"
+                        onclick="window.location='{{ route('admin.menuofrestaurants.list', ['id' => $restaurant->id]) }}'">Cancel</button>
                     <button type="submit" class="save">Save</button>
                 </div>
             </div>
@@ -208,10 +216,10 @@
     var inputImage = document.getElementById('image');
     var outputImage = document.getElementById('output');
 
-    inputImage.addEventListener('change', function(event) {
+    inputImage.addEventListener('change', function (event) {
         var file = event.target.files[0];
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             outputImage.src = e.target.result;
             outputImage.style.display = 'block';
         }

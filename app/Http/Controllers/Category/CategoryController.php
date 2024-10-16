@@ -30,12 +30,13 @@ class CategoryController extends Controller
     {
         $request->validate([
             'categoryName' => 'required',
-            'image'=> 'required'
+            'image'=> 'required|mimes:jpeg,png,jpg'
         ]);
 
         $existingCategory = categorylist::where('categoryname', $request->categoryName)->first();
         if ($existingCategory) {
-            return redirect()->route('admin.categories.list')->with('error', 'Category already exists!');
+            return redirect()->route('admin.categories.add')->withErrors(['categoryName' => 'This category name already exists!'])
+            ->withInput();
         }    
 
         $data = new categorylist;
@@ -65,28 +66,36 @@ class CategoryController extends Controller
         return view('admin/Category/editcategory',compact('data','id'));
     }
 
-    public function updatedata(Request $request,$id)
-    {
-        $request->validate([
-            'categoryName' => 'required',
-            'image' => 'required'
-        ]);
-    
-        $existingCategory = categorylist::where('categoryname', $request->categoryName)->where('id', '!=', $id)->first();
-        if ($existingCategory) {
-            return redirect()->route('admin.categories.list', $id)->with('error', 'Category already exists!');
-        }
-        $data = categorylist::find($id);
-        $data->categoryname = $request->categoryName;
-        if ($request->file('image')) {
-            $filePath = 'categoryimages';
-            $path = Storage::disk('public')->put($filePath, $request->image);
-            $data->image = $path;
-        }
+    public function updatedata(Request $request, $id)
+{
+    $request->validate([
+        'categoryName' => 'required',
+        'image' => 'nullable|mimes:jpeg,png,jpg'
+    ]);
+    $existingCategory = categorylist::where('categoryname', $request->categoryName)
+        ->where('id', '!=', $id)
+        ->first();
 
-        $data->save();
-        return redirect()->route('admin.categories.list')->with('success','Data Updated Successfully!!!!');
+    if ($existingCategory) {
+        return redirect()->route('admin.categories.editform', $id) 
+            ->withErrors(['categoryName' => 'This category name already exists!'])
+            ->withInput(); 
     }
+
+    $data = categorylist::find($id);
+    $data->categoryname = $request->categoryName;
+
+
+    if ($request->file('image')) {
+        $filePath = 'categoryimages';
+        $path = Storage::disk('public')->put($filePath, $request->image);
+        $data->image = $path;
+    }
+
+    $data->save();
+    return redirect()->route('admin.categories.list')->with('success', 'Data Updated Successfully!!!!');
+}
+
       public function toggleStatus($id)
     {
         $category = categorylist::find($id);
@@ -103,10 +112,23 @@ class CategoryController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-
-        $data = categorylist::where('categoryname', 'LIKE', "%{$search}%")->paginate(3);
-
+        
+        $query = categorylist::query();
+        
+        $query->where(function ($query) use ($search) {
+            $query->where('categoryname', 'LIKE', "%{$search}%");
+            if (strtolower($search) == 'active') {
+                $query->orWhere('status', 1);
+            } elseif (strtolower($search) == 'inactive') {
+                $query->orWhere('status', 0);
+            }
+        });
+        
+        $data = $query->sortable()->paginate(3);
+    
         return view('admin.category.categorylisting', compact('data'));
     }
+    
+    
 
 }

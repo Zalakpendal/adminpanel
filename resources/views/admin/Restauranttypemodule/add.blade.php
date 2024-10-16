@@ -121,6 +121,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashbord') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('admin.restaurant.list') }}">Restaurant Type</a></li>
+        <li class="breadcrumb-item">Add</li>
     </ol>
 </div>
 
@@ -131,9 +132,13 @@
             <div class="form-group">
                 <label for="restaurant-type" class="required">Restaurant Type</label>
                 <input type="text" id="restaurant-type" name="restaurant_type" maxlength="50"
-                    placeholder="Enter Restaurant Type">
-                @if ($errors->any())
-                    <strong style="color:red">*Please enter Restaurant Type</strong>
+                    placeholder="Enter Restaurant Type" value="{{ old('restaurant_type') }}">
+                @if ($errors->has('restaurant_type'))
+                    <div class="error-message" style="color: red;">
+                        {{ $errors->first('restaurant_type') }}
+                    </div>
+                @elseif(session('error'))
+                    <strong style="color:red">{{ session('error') }}</strong>
                 @endif
             </div>
 

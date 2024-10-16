@@ -203,7 +203,7 @@
                 <tr>
                     <td>{{ $restaurant->restaurantname }}</td>
                     <td>{{ $restaurant->phonenumber }}</td>
-                    <td><img src="{{$restaurant->image }}" alt="Image" style="width:50px; height:50px;"></td>
+                    <td><img src="{{$restaurant->image }}" alt="Image" style="width:50px; height:50px;"onclick="showDetails('{{ asset( $restaurant->image) }}')"></td>
                     <td>
                         <span class="{{ $restaurant->status == 1 ? 'status-active' : 'status-inactive' }}">
                             {{ $restaurant->status == 1 ? 'Active' : 'Inactive' }}
@@ -248,6 +248,21 @@
     </table>
     <div class="pagination">
         {{ $data->links() }}
+    </div>
+</div>
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img title="Preview" width="100%" class="image_upload_preview" src="" alt="Preview">
+            </div>
+        </div>
     </div>
 </div>
 <script>

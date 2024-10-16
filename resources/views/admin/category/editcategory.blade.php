@@ -87,7 +87,13 @@
 
         <div class="form-group">
             <label for="categoryName">Category Name</label>
-            <input type="text" id="categoryName" maxlength="50" name="categoryName" value="{{ $data->categoryname }}">
+            <input type="text" id="categoryName" maxlength="50" name="categoryName" value="{{ old('categoryName', $data->categoryname) }}">
+            @if ($errors->has('categoryName'))
+    <div class="error-message" style="color: red;">
+        {{ $errors->first('categoryName') }}
+    </div>
+@endif
+
         </div>
 
         <div class="form-group">
@@ -105,7 +111,7 @@
         <div class="form-actions">
             <div class="buttons">
                 <button type="button" class="cancel"><a href="{{ route('admin.categories.list') }}" style="color: white; text-decoration: none;">Cancel</a></button>
-                <button type="submit" class="save"><a href="{{ route('admin.categories.list') }}" style="color: white; text-decoration: none;">Update</a></button>
+                <button type="submit" class="save">Update</button>
             </div>
         </div>
     </form>
@@ -125,16 +131,4 @@
         reader.readAsDataURL(file);
     });
 </script>
-
-@if(session('success'))
-    <script>
-        toastr.success('{{ session('success') }}');
-    </script>
-@endif
-
-@if(session('error'))
-    <script>
-        toastr.error('{{ session('error') }}');
-    </script>
-@endif
 @endsection

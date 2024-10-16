@@ -165,7 +165,7 @@
 <div class="restaurantlisting">
 
 
-
+    
     <form method="GET" action="{{ route('admin.menuofrestaurants.search', ['id' => $restaurant->id]) }}">
         <div class="buttons">
             <input type="text" name="search" placeholder="Search.." class="search-input"
@@ -212,7 +212,8 @@
                         <td>{{ $menuItem->category->categoryname }}</td>
                         <td>{{ $menuItem->itemname }}</td>
                         <td>{{ $menuItem->price }}</td>
-                        <td><img src="{{$menuItem->image }}" alt="Image" style="width:50px; height:50px;"></td>
+                        <td><img src="{{$menuItem->image }}" alt="Image" style="width:50px; height:50px;"
+                        onclick="showDetails('{{ asset( $menuItem->image) }}')"></td>
                         <td>
                             <span class="{{ $menuItem->status == 1 ? 'status-active' : 'status-inactive' }}">
                                 {{ $menuItem->status == 1 ? 'Active' : 'Inactive' }}
@@ -226,7 +227,7 @@
                                         class="edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                @endcan
+                                @endcan 
 
                                 @can('delete menu')
                                     <form
@@ -258,6 +259,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img title="Preview" width="100%" class="image_upload_preview" src="" alt="Preview">
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.delete-btn').forEach(function (button) {
@@ -279,6 +295,6 @@
                 });
             });
         });
-    });
+    }); 
 </script>
 @endsection

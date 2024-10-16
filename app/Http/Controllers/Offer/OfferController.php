@@ -57,7 +57,7 @@ class OfferController extends Controller
             'coupon_validity' => 'required',
             'coupon_time' => 'required',
             'amount' => 'required',
-            'minimum_price' => 'required|numeric|min:1|max:9999', // Ensures it's numeric and between 1 and 9999
+            'minimum_price' => 'required|numeric|min:1|max:9999',
         ]);
 
 
@@ -132,33 +132,38 @@ class OfferController extends Controller
         }
     }
     public function searchOffers(Request $request)
-    {
-        $search = $request->input('search');
-        $currentUser = Auth::user();
-        $restaurantId = $currentUser->restaurants;
+{
+    $search = $request->input('search');
+    $currentUser = Auth::user();
+    $restaurantId = $currentUser->restaurants;
 
-        $offers = offerlist::query()
-            ->when($restaurantId, function ($query) use ($restaurantId) {
-                return $query->where('restaurant_id', $restaurantId);
-            })
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('offername', 'like', "%{$search}%")
-                        ->orWhere('amount', 'like', "%{$search}%")
-                        ->orWhere('minimum_price', 'like', "%{$search}%")
-                        ->orWhere('coupon_validity', 'like', "%{$search}%")
-                        ->orWhere('coupon_time', 'like', "%{$search}%")
-                        ->orWhereHas('restaurant', function ($q) use ($search) {
-                            $q->where('restaurantname', 'like', "%{$search}%");
-                        });
-                });
-            })
-            ->with('restaurant')
-            ->paginate(5);
+    $offers = offerlist::query()
+        ->when($restaurantId, function ($query) use ($restaurantId) {
+            return $query->where('restaurant_id', $restaurantId);
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('offername', 'like', "%{$search}%")
+                    ->orWhere('amount', 'like', "%{$search}%")
+                    ->orWhere('minimum_price', 'like', "%{$search}%")
+                    ->orWhere('coupon_validity', 'like', "%{$search}%")
+                    ->orWhere('coupon_time', 'like', "%{$search}%")
+                    ->orWhereHas('restaurant', function ($q) use ($search) {
+                        $q->where('restaurantname', 'like', "%{$search}%");
+                    });
 
-        return view('admin.offer.offer', compact('offers'));
-    }
+                if (strtolower($search) == 'active') {
+                    $q->orWhere('status', 1);
+                } elseif (strtolower($search) == 'inactive') {
+                    $q->orWhere('status', 0);
+                }
+            });
+        })
+        ->with('restaurant')
+        ->paginate(5);
 
+    return view('admin.offer.offer', compact('offers'));
+}
 
 
 }

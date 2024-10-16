@@ -154,7 +154,7 @@
 
                 <div class="form-group {{ $errors->has('item_name') ? 'error' : '' }}">
                     <label for="item_name">Item Name <span style="color: #f44336;">*</span></label>
-                    <input type="text" id="item_name"  maxlength="50" name="item_name" value="{{ old('item_name') }}" placeholder="Enter item name">
+                    <input type="text" id="item_name" maxlength="50" name="item_name" value="{{ old('item_name') }}" placeholder="Enter item name">
                     @if ($errors->has('item_name'))
                         <div class="error-message">{{ $errors->first('item_name') }}</div>
                     @endif
@@ -172,7 +172,7 @@
 
                 <div class="form-group {{ $errors->has('description') ? 'error' : '' }}">
                     <label for="description">Description <span style="color: #f44336;">*</span></label>
-                    <textarea id="description" name="description" rows="4"  maxlength="255" placeholder="Enter item description">{{ old('description') }}</textarea>
+                    <textarea id="description" name="description" rows="4" maxlength="255" placeholder="Enter item description">{{ old('description') }}</textarea>
                     @if ($errors->has('description'))
                         <div class="error-message">{{ $errors->first('description') }}</div>
                     @endif

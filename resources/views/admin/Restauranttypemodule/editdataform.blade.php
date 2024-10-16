@@ -57,6 +57,31 @@
     .buttons a:hover{
         color: white;
     }
+    
+    .cancel {
+        background-color: #f44336;
+    }
+
+    .save {
+        background-color: #3C5B6F;
+    }
+
+    .cancel:hover {
+        background-color: #c62828;
+    }
+
+    .save:hover {
+        background-color: #2c4a5f;
+    }
+
+    .buttons a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .buttons a:hover {
+        color: white;
+    }
 </style>
 <div class="title">
     <h2>Restaurant Type</h2>
@@ -70,14 +95,21 @@
         </div>
 
 <div class="form">
-    <form action="{{route('admin.restaurant.updatedata',[$id])}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.restaurant.updatedata', [$id])}}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="edittitle">
         <h3>Edit Form</h3>
     </div>
         <div class="form-group">
             <label for="restaurant-type">Restaurant Type</label>
-            <input type="text" id="restaurant-type" name="restaurant_type" maxlength="50" value="{{$data->restauranttype}}" required>
+            <input type="text" id="restaurant-type" name="restaurant_type" maxlength="50" value="{{ old('restaurant_type', $data->restauranttype) }}">
+
+            @if ($errors->has('restaurant_type'))
+        <div class="error-message" style="color: red;">
+            {{ $errors->first('restaurant_type') }}
+        </div>
+    @endif
+
             <div class="buttons">
             <button type="button" class="cancel"><a href="{{route('admin.restaurant.list')}}">Cancel</a></button>
             <button type="submit" class="save" value="Update">Save</button>

@@ -41,17 +41,18 @@ class MenuController extends Controller
             'item_name' => 'required',
             'item_price' => 'required|numeric',
             'description' => 'required',
-            'image' => 'required|image'
+            'image' => 'required|image|mimes:jpeg,png,jpg'
         ]);
 
         $existingRestaurantItem = menulist::where('itemname', $request->item_name)
             ->where('restaurant_id', $request->restaurant_id)
             ->first();
 
-        if ($existingRestaurantItem) {
-            return redirect()->route('admin.menuofrestaurants.list', ['id' => $id])
-                ->with('error', 'Item already exists in this restaurant.');
-        }
+            if ($existingRestaurantItem) {
+                return redirect()->route('admin.menuofrestaurants.add', ['id' => $id])
+                    ->withErrors(['item_name' => 'This item already exists in the menu.']) 
+                    ->withInput();
+            }
 
         $data = new menulist;
         $data->restaurant_id = $request->restaurant_id;
@@ -88,19 +89,51 @@ class MenuController extends Controller
         return view('admin.menu.editmenu', compact('menuItem', 'categories', 'restaurant'));
     }
 
+    // public function updateform(Request $request, $restaurant_id, $menu_id)
+    // {
+    //     $menuItem = menulist::find($menu_id);
+    //     $menuItem->category_id = $request->category_id;
+    //     $menuItem->itemname = $request->item_name;
+    //     $menuItem->price = $request->item_price;
+    //     $menuItem->description = $request->description;
+
+
+    //     $menuItem->save();
+    //     return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success', 'updated successfully');
+
+    // }
     public function updateform(Request $request, $restaurant_id, $menu_id)
     {
+        $request->validate([
+            'category_id' => 'required',
+            'item_name' => 'required',
+            'item_price' => 'required|numeric',
+            'description' => 'required',
+        ]);
         $menuItem = menulist::find($menu_id);
+        
+        $existingItem = menulist::where('itemname', $request->item_name)
+            ->where('restaurant_id', $restaurant_id)
+            ->where('id', '!=', $menu_id) 
+            ->first();
+    
+        if ($existingItem) {
+            return redirect()->back()
+                ->withErrors(['item_name' => 'This item already exists in the menu.']) 
+                ->withInput(); 
+        }
+    
         $menuItem->category_id = $request->category_id;
         $menuItem->itemname = $request->item_name;
         $menuItem->price = $request->item_price;
         $menuItem->description = $request->description;
-
-
+    
         $menuItem->save();
-        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])->with('success', 'updated successfully');
-
+        
+        return redirect()->route('admin.menuofrestaurants.list', ['id' => $restaurant_id])
+            ->with('success', 'Updated successfully');
     }
+    
     public function toggleStatus($restaurant_id, $menu_id)
     {
         $menuItem = menulist::find($menu_id);
@@ -122,6 +155,12 @@ class MenuController extends Controller
                     ->orWhereHas('category', function ($query) use ($search) {
                         $query->where('categoryname', 'LIKE', "%{$search}%");
                     });
+                if(strtolower($search)=='active'){
+                    $query->orWhere('status',1);
+                }
+                elseif(strtolower($search)=='inactive'){
+                    $query->orWhere('status',0);
+                }
             });
         }
         $menuItems = $query->with('category')->paginate(5);

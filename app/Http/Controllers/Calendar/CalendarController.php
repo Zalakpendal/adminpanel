@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
-    
+
     public function index()
     {
         $currentUser = Auth::user();
@@ -38,16 +38,15 @@ class CalendarController extends Controller
     public function create()
     {
         $currentUser = Auth::user();
-        $restaurantId = $currentUser->restaurants; 
+        $restaurantId = $currentUser->restaurants;
 
         if ($restaurantId) {
             $restaurants = restaurantslist::where('id', $restaurantId)->pluck('restaurantname', 'id');
-        }
-        else{
+        } else {
             $restaurants = restaurantslist::where('status', '1')->pluck('restaurantname', 'id');
         }
-        return view('admin.calendar.addevent',['restaurants'=>$restaurants]);
-        
+        return view('admin.calendar.addevent', ['restaurants' => $restaurants]);
+
     }
 
     public function store(Request $request)
@@ -63,10 +62,10 @@ class CalendarController extends Controller
         $event->restaurant_id = $request->restaurants;
         $event->title = $request->title;
         $event->start_date = $request->start_date;
-        $event->end_date = $request->end_date;
+        $event->end_date = date('Y-m-d H:i:s', strtotime($request->end_date . ' +1 day'));
         $event->color = $request->color;
         $event->save();
-       
+
         // Event::create($validated);
         return redirect()->route('admin.calendar.calendar')->with('success', 'Event added successfully.');
     }
@@ -98,9 +97,14 @@ class CalendarController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'color' => 'nullable|string|max:7',
         ]);
-
         $event = Event::findOrFail($id);
-        $event->update($validated);
+        $event->title = $validated['title'];
+        $event->start_date = $validated['start_date'];
+
+
+        $event->end_date = date('Y-m-d H:i:s', strtotime($validated['end_date'] . ' +1 day'));
+        $event->color = $validated['color'];
+        $event->save();
 
         return redirect()->route('admin.calendar.calendar')->with('success', 'Event updated successfully.');
     }

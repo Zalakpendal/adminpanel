@@ -192,10 +192,10 @@
     <table>
         <thead>
             <tr>
-            <th>Restaurant Name</th> <!-- No sorting link or icon -->
-            <th>Offer Name</th> <!-- No sorting link or icon -->
+            <th>Restaurant Name</th> 
+            <th>Offer Name</th> 
 
-            <th>
+                  <th>
                 <a href="{{ route('admin.offersofrestaurants.list', ['sort' => 'start_date', 'direction' => request('sort') == 'start_date' && request('direction') == 'asc' ? 'desc' : 'asc']) }}"
                    class="sortable">
                     Start-Date

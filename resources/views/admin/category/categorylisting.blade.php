@@ -141,7 +141,7 @@
 <div class="homeredirection">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.dashbord')}}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{route('admin.categories.list')}}">Categorylist</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.categories.list')}}">Category</a></li>
         <li class="breadcrumb-item">List</li>
     </ol>
 </div>
@@ -175,47 +175,51 @@
             </tr>
         </thead>
         <tbody>
-        @if ($data->isEmpty())
-        <tr>
-            <td colspan="4" class="text-center">No records found</td>
-        </tr>
-        @else
-            @foreach ($data as $category)
+            @if ($data->isEmpty())
                 <tr>
-                    <td>{{$category->categoryname}}</td>
-                    <td><img src="{{$category->image }}" alt="Image" style="width:50px; height:50px;"></td>
-                    <td>
-                        <span class="{{ $category->status == 1 ? 'status-active' : 'status-inactive' }}">
-                            {{ $category->status == 1 ? 'Active' : 'Inactive' }}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-icons">
-                            @can('update category')
-                                <button class="edit"><a href="{{route('admin.categories.editform', [$category->id])}}"><i
-                                            class="fas fa-edit"></i></a></button>
-                            @endcan
-                            <!-- <button class="delete"><a href="{{route('admin.categories.delete',[$category->id])}}"><i class="fas fa-trash-alt"></i></a></button> -->
-                            @can('delete category')
-                                <form action="{{ route('admin.categories.delete', [$category->id]) }}" method="get"
-                                    class="delete-form" style="display:inline;">
+                    <td colspan="4" class="text-center">No records found</td>
+                </tr>
+            @else
+                @foreach ($data as $category)
+                    <tr>
+                        <td>{{$category->categoryname}}</td>
+                        <td>
+                            <img src="{{ asset($category->image) }}" alt="Image"
+                                style="width:50px; height:50px; cursor: pointer;"
+                                onclick="showDetails('{{ asset($category->image) }}')">
+                        </td>
+                        <td>
+                            <span class="{{ $category->status == 1 ? 'status-active' : 'status-inactive' }}">
+                                {{ $category->status == 1 ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                @can('update category')
+                                    <button class="edit"><a href="{{route('admin.categories.editform', [$category->id])}}"><i
+                                                class="fas fa-edit"></i></a></button>
+                                @endcan
+                                <!-- <button class="delete"><a href="{{route('admin.categories.delete',[$category->id])}}"><i class="fas fa-trash-alt"></i></a></button> -->
+                                @can('delete category')
+                                    <form action="{{ route('admin.categories.delete', [$category->id]) }}" method="get"
+                                        class="delete-form" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="delete delete-btn">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                @endcan
+                                <form action="{{ route('admin.categories.toggleStatus', [$category->id]) }}" method="POST"
+                                    style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="delete delete-btn">
-                                        <i class="fas fa-trash-alt"></i>
+                                    <button type="submit" class="statusbtn">
+                                        <i class="fas {{ $category->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                     </button>
                                 </form>
-                            @endcan
-                            <form action="{{ route('admin.categories.toggleStatus', [$category->id]) }}" method="POST"
-                                style="display: inline;">
-                                @csrf
-                                <button type="submit" class="statusbtn">
-                                    <i class="fas {{ $category->status == 1 ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
             @endif
         </tbody>
     </table>
@@ -223,6 +227,26 @@
         {{ $data->links() }}
     </div>
 </div>
+
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img title="Preview" width="100%" class="image_upload_preview" src="" alt="Preview">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.delete-btn').forEach(function (button) {

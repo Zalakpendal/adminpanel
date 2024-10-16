@@ -132,6 +132,10 @@
                 <input type="text" id="categoryName" name="categoryName" maxlength="50" placeholder="Enter category name" value="{{ old('categoryName') }}">
                 @if ($errors->has('categoryName'))
                     <div class="error-message">{{ $errors->first('categoryName') }}</div>
+                @elseif($errors->has('categoryName'))
+                <div class="error-message" style="color: red;">
+                        {{ $errors->first('categoryName') }}
+                    </div>
                 @endif
             </div>
 

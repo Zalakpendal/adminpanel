@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Redirect to the logout route if confirmed
                 window.location.href = "{{ route('admin.logout') }}";
             }
         });
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 window.onload = function() {
-    const links = document.querySelectorAll('.nav-link');
+    const links = document.querySelectorAll('.nav-item');
 
     links.forEach(link => {
         if (link.href === window.location.href) {
@@ -141,6 +140,15 @@ window.onload = function() {
         });
     });
 </script>
+<script>
+function showDetails(imageSrc) {
+    $(".image_upload_preview").attr('src', imageSrc);
+    $("#imagePreviewModal").modal('show'); // This should work if Bootstrap JS is loaded
+}
+</script>
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
 
 
 <!-- -->

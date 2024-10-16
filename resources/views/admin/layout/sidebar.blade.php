@@ -20,14 +20,14 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.restaurant.list') }}"
-                        class="nav-link {{ request()->is('admin/restaurant/list') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.restaurant*') ? 'active' : '' }}">
                         <i class="fa fa-home nav-icon"></i>
                         <p style="color:white">Restaurant Type</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.categories.list') }}"
-                        class="nav-link {{ request()->is('admin/categories/list') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}">
                         <i class="fa fa-database nav-icon"></i>
                         <p style="color:white">Category</p>
                     </a>
@@ -35,14 +35,14 @@
 
                 <li class="nav-item">
                     <a href="{{ route('admin.allrestaurants.list') }}"
-                        class="nav-link {{ request()->is('admin/allrestaurants/list') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.allrestaurants*')||request()->routeIs('admin.menuofrestaurants*') ? 'active' : '' }}">
                         <i class="fa fa-cutlery nav-icon"></i>
                         <p style="color:white">Restaurants</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.offersofrestaurants.list') }}"
-                        class="nav-link {{ request()->is('admin/offersofrestaurants/list') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.offersofrestaurants*') ? 'active' : '' }}">
                         <i class="fas fa-gift nav-icon"></i>
                         <p style="color:white">Offer</p>
                     </a>
@@ -50,7 +50,7 @@
 
                 <li class="nav-item">
                     <a href="{{ route('admin.calendar.calendar') }}"
-                        class="nav-link {{ request()->is('admin/calendar/calendar') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.calendar*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-calendar"></i>
                         <p style="color:white">Event Calendar</p>
                     </a>
@@ -83,28 +83,28 @@
                 </li> -->
                 @can('view setting')
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ request()->is('admin/settings*') ? 'active' : '' }}"
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}"
                         id="settings-link">
                         <i class="fa fa-cogs nav-icon"></i>
                         <p style="color:white">Settings<i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview" id="settings-menu"
-                        style="{{ request()->is('permission') || request()->is('role') || request()->is('users') ? 'display: block;' : 'display: none;' }}">
+                        style="{{ request()->routeIs('permission*') || request()->routeIs('role*') || request()->routeIs('users*') ? 'display: block;' : 'display: none;' }}">
                         <li class="nav-item">
                             <a href="{{ url('permission') }}"
-                                class="nav-link {{ request()->is('permission') ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs('permission*') ? 'active' : '' }}">
                                 <i class="fa fa-lock nav-icon"></i>
                                 <p style="color:white">Permissions</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('role') }}" class="nav-link {{ request()->is('role') ? 'active' : '' }}">
+                            <a href="{{ url('role') }}" class="nav-link {{ request()->routeIs('role*') ? 'active' : '' }}">
                                 <i class="fa fa-users nav-icon"></i>
                                 <p style="color:white">Roles</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('users') }}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
+                            <a href="{{ url('users') }}" class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}">
                                 <i class="fa fa-user nav-icon"></i>
                                 <p style="color:white">User</p>
                             </a>

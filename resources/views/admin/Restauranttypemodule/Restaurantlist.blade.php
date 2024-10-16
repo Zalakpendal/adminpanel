@@ -154,6 +154,8 @@
 <div class="homeredirection">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.dashbord')}}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.restaurant.list') }}">Restaurant Type</a></li>
+        <li class="breadcrumb-item">List</li>
     </ol>
 </div>
 
