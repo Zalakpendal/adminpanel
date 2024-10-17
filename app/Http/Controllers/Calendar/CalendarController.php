@@ -20,18 +20,20 @@ class CalendarController extends Controller
         } else {
             $events = Event::all();
         }
+        // dd($events);
         $formattedEvents = [];
         foreach ($events as $event) {
             $formattedEvents[] = [
                 'id' => $event->id,
                 'title' => $event->title,
                 'start' => $event->start_date,
-                'end' => $event->end_date,
+                'end' =>  date('Y-m-d', strtotime($event->end_date . ' +1 day')),
                 'color' => $event->color,
             ];
         }
+        // dd($formattedEvents);
         return view('admin.calendar.calendar', [
-            'events' => $formattedEvents,
+            'formattedEvents' => $formattedEvents
         ]);
     }
 
@@ -62,9 +64,10 @@ class CalendarController extends Controller
         $event->restaurant_id = $request->restaurants;
         $event->title = $request->title;
         $event->start_date = $request->start_date;
-        $event->end_date = date('Y-m-d H:i:s', strtotime($request->end_date . ' +1 day'));
+        $event->end_date = $request->end_date;
         $event->color = $request->color;
         $event->save();
+        // dd($event);
 
         // Event::create($validated);
         return redirect()->route('admin.calendar.calendar')->with('success', 'Event added successfully.');
@@ -100,9 +103,7 @@ class CalendarController extends Controller
         $event = Event::findOrFail($id);
         $event->title = $validated['title'];
         $event->start_date = $validated['start_date'];
-
-
-        $event->end_date = date('Y-m-d H:i:s', strtotime($validated['end_date'] . ' +1 day'));
+        $event->end_date = $validated['end_date'];
         $event->color = $validated['color'];
         $event->save();
 

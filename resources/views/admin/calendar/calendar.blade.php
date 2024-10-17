@@ -46,12 +46,13 @@
 <div id="calendar"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             editable: true,
             selectable: true,
-            events: {!! json_encode($events) !!},
+            events: {!! json_encode($formattedEvents) !!},
             eventClick: function (info) {
                 const deleteEventBtn = document.getElementById('deleteEventBtn');
                 deleteEventBtn.classList.remove('hidden');

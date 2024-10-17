@@ -172,11 +172,11 @@
         <thead>
             <tr>
                 <th>
-                    <a href="{{ route('admin.restaurant.list', ['sort' => 'restauranttype', 'direction' => (request('sort') === 'restauranttype' && request('direction') === 'asc') ? 'desc' : 'asc']) }}"
+                    <a href="{{ route('admin.restaurant.list', ['sort' => 'restauranttype', 'direction' => (request('sort') == 'restauranttype' && request('direction') === 'asc') ? 'desc' : 'asc']) }}"
                         class="sortable">
                         Restaurant Type
                         <i
-                            class="fa {{ request('sort') === 'restauranttype' ? (request('direction') === 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
+                            class="fa {{ request('sort') == 'restauranttype' ? (request('direction') == 'asc' ? 'fa-sort-asc' : 'fa-sort-desc') : 'fa-sort' }}"></i>
                     </a>
                 </th>
                 <th>Status</th>
